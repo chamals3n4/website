@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chamal</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                },
+            },
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Inter', system-ui, sans-serif;
+        }
+    </style>
+</head>
+
+<body class="bg-white dark:bg-[#1a1a1a] text-gray-900 dark:text-gray-100 transition-colors duration-200">
+    <div class="min-h-screen flex items-center justify-center px-4">
+        <div class="max-w-2xl w-full">
+            <!-- Main Content -->
+            <main class="space-y-5 leading-relaxed">
+                <p class="text-gray-900 dark:text-gray-100">
+                    Hi, I'm Chamal.
+                </p>
+
+                <p class="text-gray-900 dark:text-gray-100">
+                    I'm a Software Engineering undergraduate at
+                    <a href="https://www.sliit.lk/" target="_blank" rel="noopener noreferrer"
+                        class="text-blue-600 dark:text-blue-400 hover:underline">SLIIT</a>
+                    and a freelance web application developer.
+                </p>
+
+                <p class="text-gray-900 dark:text-gray-100">
+                    I'm currently working on
+                    <a href="https://elephantjourney.info/" target="_blank" rel="noopener noreferrer"
+                        class="text-blue-600 dark:text-blue-400 hover:underline">Elephant Journey</a>,
+                    a project I co-founded with
+                    <a href="https://www.elephantjourney.info/about-us" target="_blank" rel="noopener noreferrer"
+                        class="text-blue-600 dark:text-blue-400 hover:underline">my school friends</a>
+                    in 2023. We're building a mobile application to help
+                    reduce
+                    human-elephant conflict in Sri Lanka, and I focus mainly on the web app and UI/UX design.
+                </p>
+
+                <p class="text-gray-900 dark:text-gray-100">
+                    Most of my time goes into building, learning, and experimenting, trying to make things better with
+                    software.
+                </p>
+
+                <p class="text-gray-900 dark:text-gray-100">
+                    You can reach me on Instagram
+                    <a href="https://instagram.com/chamalsena" target="_blank" rel="noopener noreferrer"
+                        class="text-blue-600 dark:text-blue-400 hover:underline">@chamalsena</a>
+                    or if you need something more professional, you can email me at
+                    <a href="mailto:chamals004@gmail.com"
+                        class="text-blue-600 dark:text-blue-400 hover:underline">chamals004@gmail.com</a>.
+                </p>
+
+                <p class="text-gray-900 dark:text-gray-100">
+                    See my open-source work on
+                    <a href="https://github.com/chamals3n4" target="_blank" rel="noopener noreferrer"
+                        class="text-blue-600 dark:text-blue-400 hover:underline">github.com/chamals3n4</a>.
+                </p>
+
+                <p class="text-gray-900 dark:text-gray-100">
+                    I write occasionally on
+                    <a href="https://medium.com/@chamalsena" target="_blank" rel="noopener noreferrer"
+                        class="text-blue-600 dark:text-blue-400 hover:underline">Medium</a>.
+                </p>
+            </main>
+        </div>
+    </div>
+
+    <!-- theme toggle btn -->
+    <button id="theme-toggle"
+        class="fixed bottom-6 right-6 p-1.5 rounded-md border border-gray-300 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+        aria-label="Toggle theme">
+        <svg id="sun-icon" class="w-4 h-4 text-gray-600 dark:text-gray-400" fill="none" stroke="currentColor"
+            viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z">
+            </path>
+        </svg>
+        <svg id="moon-icon" class="w-4 h-4 text-gray-600 dark:text-gray-400 hidden" fill="none" stroke="currentColor"
+            viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z">
+            </path>
+        </svg>
+    </button>
+
+    <script>
+        const themeToggle = document.getElementById('theme-toggle');
+        const html = document.documentElement;
+        const sunIcon = document.getElementById('sun-icon');
+        const moonIcon = document.getElementById('moon-icon');
+
+        const currentTheme = localStorage.getItem('theme') || 'dark';
+        html.classList.toggle('dark', currentTheme === 'dark');
+        updateIcons(currentTheme);
+
+        function updateIcons(theme) {
+            if (theme === 'dark') {
+                sunIcon.classList.remove('hidden');
+                moonIcon.classList.add('hidden');
+            } else {
+                sunIcon.classList.add('hidden');
+                moonIcon.classList.remove('hidden');
+            }
+        }
+
+        themeToggle.addEventListener('click', () => {
+            const isDark = html.classList.contains('dark');
+
+            if (isDark) {
+                html.classList.remove('dark');
+                localStorage.setItem('theme', 'light');
+                updateIcons('light');
+            } else {
+                html.classList.add('dark');
+                localStorage.setItem('theme', 'dark');
+                updateIcons('dark');
+            }
+        });
+    </script>
+</body>
+
+</html>
