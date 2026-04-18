@@ -1,0 +1,95 @@
+---
+import { getCollection } from 'astro:content';
+import BaseHead from '../../components/BaseHead.astro';
+import Footer from '../../components/Footer.astro';
+import FormattedDate from '../../components/FormattedDate.astro';
+import Header from '../../components/Header.astro';
+import { SITE_DESCRIPTION, SITE_TITLE } from '../../consts';
+
+const posts = (await getCollection('blog')).sort(
+	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
+);
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+		<style>
+			main {
+				width: 100%;
+				max-width: 100%;
+				margin-top: 0.5rem;
+			}
+			.post-list {
+				list-style: none;
+				margin: 0;
+				padding: 0;
+			}
+			.post-row {
+				display: flex;
+				flex-wrap: wrap;
+				align-items: baseline;
+				column-gap: 0.75rem;
+				row-gap: 0.15rem;
+				margin: 0 0 0.85rem 0;
+				line-height: 1.5;
+			}
+			.post-date {
+				flex: 0 0 6.25rem;
+				min-width: 6.25rem;
+				margin: 0;
+				padding: 0;
+				font-style: italic;
+				font-weight: 400;
+				color: #555;
+				font-size: 1em;
+			}
+			.post-title-link {
+				color: #3273dc;
+				text-decoration: underline;
+				font-weight: 400;
+				flex: 1 1 auto;
+				min-width: 0;
+			}
+			.post-title-link:hover {
+				color: #3273dc;
+			}
+			.post-title-link:visited {
+				color: #609;
+			}
+			@media (max-width: 720px) {
+				.post-row {
+					flex-direction: column;
+					align-items: flex-start;
+					column-gap: 0;
+					margin-bottom: 1rem;
+				}
+				.post-date {
+					flex: none;
+					min-width: 0;
+				}
+			}
+		</style>
+	</head>
+	<body>
+		<Header />
+		<main>
+			<ul class="post-list">
+				{
+					posts.map((post) => (
+						<li class="post-row">
+							<div class="post-date">
+								<FormattedDate date={post.data.pubDate} />
+							</div>
+							<a class="post-title-link" href={`/blog/${post.id}/`}>
+								{post.data.title}
+							</a>
+						</li>
+					))
+				}
+			</ul>
+		</main>
+		<Footer />
+	</body>
+</html>

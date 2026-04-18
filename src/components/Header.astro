@@ -1,0 +1,67 @@
+---
+import { SITE_TITLE } from "../consts";
+import HeaderLink from "./HeaderLink.astro";
+---
+
+<header>
+  <h2><a href="/">{SITE_TITLE}</a></h2>
+  <nav aria-label="Main navigation">
+    <HeaderLink href="/">Home</HeaderLink>
+    <HeaderLink href="/blog">Blog</HeaderLink>
+    <HeaderLink href="/about">About</HeaderLink>
+    <a
+      class="nav-external"
+      href="mailto:chamals004@gmail.com"
+      target="_blank"
+      rel="noopener noreferrer">Email</a
+    >
+    <a
+      class="nav-external"
+      href="https://x.com/chamalsena"
+      target="_blank"
+      rel="noopener noreferrer">X</a
+    >
+    <a
+      class="nav-external"
+      href="https://github.com/chamals3n4"
+      target="_blank"
+      rel="noopener noreferrer">GitHub</a
+    >
+    <a
+      class="nav-external"
+      href="https://linkedin.com/in/chamalsena"
+      target="_blank"
+      rel="noopener noreferrer">Linkedin</a
+    >
+  </nav>
+</header>
+<style>
+  header {
+    margin: 0 0 2em;
+    padding: 0;
+    background: #fff;
+  }
+  h2 {
+    margin: 0.5em 0;
+    line-height: 1.2;
+    font-size: 2rem;
+  }
+  h2 a {
+    color: inherit;
+    text-decoration: none;
+  }
+  nav {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.85rem 1rem;
+  }
+  .nav-external {
+    display: inline-block;
+    color: #3273dc;
+    text-decoration: none;
+  }
+  .nav-external:hover {
+    text-decoration: underline;
+  }
+</style>

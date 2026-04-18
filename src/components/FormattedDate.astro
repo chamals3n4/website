@@ -1,0 +1,24 @@
+---
+interface Props {
+	date: Date;
+	/** e.g. August 08, 2022 — for article / about headers */
+	long?: boolean;
+}
+
+const { date, long = false } = Astro.props;
+
+const shortOpts: Intl.DateTimeFormatOptions = {
+	year: 'numeric',
+	month: 'short',
+	day: 'numeric',
+};
+const longOpts: Intl.DateTimeFormatOptions = {
+	year: 'numeric',
+	month: 'long',
+	day: '2-digit',
+};
+---
+
+<time datetime={date.toISOString()}>
+	{date.toLocaleDateString('en-us', long ? longOpts : shortOpts)}
+</time>

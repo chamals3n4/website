@@ -1,0 +1,129 @@
+---
+import { Image } from 'astro:assets';
+import type { CollectionEntry } from 'astro:content';
+import BaseHead from '../components/BaseHead.astro';
+import Footer from '../components/Footer.astro';
+import FormattedDate from '../components/FormattedDate.astro';
+import Header from '../components/Header.astro';
+
+type Props = CollectionEntry<'blog'>['data'] & {
+	/** About page: single “Last updated on …” line like the starter screenshot */
+	variant?: 'article' | 'about';
+};
+
+const {
+	variant = 'article',
+	title,
+	description,
+	pubDate,
+	updatedDate,
+	heroImage,
+} = Astro.props;
+---
+
+<html lang="en">
+	<head>
+		<BaseHead title={title} description={description} />
+		<style>
+			main {
+				width: 100%;
+				max-width: 100%;
+				margin: 0;
+			}
+			article {
+				display: flex;
+				flex-direction: column;
+				align-items: stretch;
+			}
+			.hero-image {
+				width: 100%;
+				margin: 0 0 1.25rem 0;
+			}
+			.hero-image img {
+				display: block;
+				width: 100%;
+				height: auto;
+				margin: 0;
+				border-radius: 0;
+				box-shadow: none;
+			}
+			.prose {
+				width: 100%;
+				max-width: 100%;
+				margin: 0;
+				padding: 0;
+				color: #444;
+				text-align: left;
+			}
+			.title {
+				margin: 0 0 1.25rem 0;
+				padding: 0;
+				text-align: left;
+				line-height: 1.3;
+			}
+			.title h1 {
+				margin: 0 0 0.5rem 0;
+				font-size: 1.8125rem;
+				font-weight: 700;
+				line-height: 1.2;
+				color: #222;
+			}
+			.date {
+				margin: 0 0 0.75rem 0;
+				font-size: 0.9375rem;
+				line-height: 1.5;
+				color: #666;
+				font-weight: 400;
+			}
+			.title hr {
+				margin: 0;
+				border: none;
+				border-top: 1px solid #e5e5e5;
+			}
+			.last-updated-on {
+				font-style: normal;
+			}
+		</style>
+	</head>
+
+	<body>
+		<Header />
+		<main>
+			<article>
+				<div class="hero-image">
+					{heroImage && <Image width={1020} height={510} src={heroImage} alt="" />}
+				</div>
+				<div class="prose">
+					<div class="title">
+						<h1>{title}</h1>
+						<div class="date">
+							{
+								variant === 'about' ? (
+									<span class="last-updated-on">
+										Last updated on{' '}
+										<FormattedDate date={updatedDate ?? pubDate} long />
+									</span>
+								) : (
+									<>
+										<FormattedDate date={pubDate} long />
+										{updatedDate && (
+											<>
+												<br />
+												<span class="last-updated-on">
+													Last updated on <FormattedDate date={updatedDate} long />
+												</span>
+											</>
+										)}
+									</>
+								)
+							}
+						</div>
+						<hr />
+					</div>
+					<slot />
+				</div>
+			</article>
+		</main>
+		<Footer />
+	</body>
+</html>
