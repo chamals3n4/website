@@ -109,6 +109,20 @@ const {
 				padding-top: 2.75rem;
 				padding-right: 1rem;
 			}
+			.prose :global(.code-language) {
+				position: absolute;
+				top: 0.72rem;
+				left: 0.85rem;
+				z-index: 1;
+				max-width: calc(100% - 6.5rem);
+				overflow: hidden;
+				color: var(--muted);
+				font: 700 11px/1.4 "Roboto Mono", "Courier New", monospace;
+				letter-spacing: 0;
+				text-overflow: ellipsis;
+				text-transform: uppercase;
+				white-space: nowrap;
+			}
 			.prose :global(.copy-code) {
 				position: absolute;
 				top: 0.65rem;
@@ -119,7 +133,7 @@ const {
 				padding: 0.22rem 0.48rem;
 				background: var(--surface);
 				color: var(--accent);
-				font: 12px/1.4 "Roboto Mono", "Courier New", monospace;
+				font: 600 12px/1.35 Arial, Helvetica, sans-serif;
 				cursor: pointer;
 			}
 			.prose :global(.copy-code:hover),
@@ -183,6 +197,40 @@ const {
 		<Footer />
 		<script>
 			const codeBlocks = document.querySelectorAll('.prose pre');
+			const languageNames = new Map([
+				['astro', 'Astro'],
+				['bash', 'Shell'],
+				['bal', 'Ballerina'],
+				['ballerina', 'Ballerina'],
+				['css', 'CSS'],
+				['html', 'HTML'],
+				['javascript', 'JavaScript'],
+				['js', 'JavaScript'],
+				['json', 'JSON'],
+				['jsx', 'JSX'],
+				['md', 'Markdown'],
+				['mdx', 'MDX'],
+				['shell', 'Shell'],
+				['shellscript', 'Shell'],
+				['sh', 'Shell'],
+				['ts', 'TypeScript'],
+				['tsx', 'TSX'],
+				['typescript', 'TypeScript'],
+				['yaml', 'YAML'],
+				['yml', 'YAML'],
+				['zsh', 'Shell'],
+			]);
+
+			const getLanguage = (pre) => {
+				const code = pre.querySelector('code');
+				const className = `${pre.className} ${code?.className ?? ''}`;
+				const match = className.match(/(?:^|\s)language-([^\s]+)/);
+				const language = (pre.dataset.language ?? match?.[1])?.toLowerCase();
+
+				if (!language) return null;
+
+				return languageNames.get(language) ?? language;
+			};
 
 			codeBlocks.forEach((pre) => {
 				if (pre.parentElement?.classList.contains('code-block')) return;
@@ -191,6 +239,14 @@ const {
 				wrapper.className = 'code-block';
 				pre.parentNode?.insertBefore(wrapper, pre);
 				wrapper.appendChild(pre);
+
+				const language = getLanguage(pre);
+				if (language) {
+					const label = document.createElement('div');
+					label.className = 'code-language';
+					label.textContent = language;
+					wrapper.appendChild(label);
+				}
 
 				const button = document.createElement('button');
 				button.className = 'copy-code';

@@ -152,6 +152,26 @@ pre {
   line-height: 1.6;
   scrollbar-width: thin;
 }
+pre.astro-code {
+  background-color: var(--shiki-light-bg, var(--code-block-bg)) !important;
+}
+pre.astro-code code,
+pre.astro-code span {
+  color: var(--shiki-light, var(--code-text)) !important;
+  font-style: var(--shiki-light-font-style, normal) !important;
+  font-weight: var(--shiki-light-font-weight, inherit) !important;
+  text-decoration: var(--shiki-light-text-decoration, none) !important;
+}
+html[data-theme="dark"] pre.astro-code {
+  background-color: var(--shiki-dark-bg, var(--code-block-bg)) !important;
+}
+html[data-theme="dark"] pre.astro-code code,
+html[data-theme="dark"] pre.astro-code span {
+  color: var(--shiki-dark, var(--code-text)) !important;
+  font-style: var(--shiki-dark-font-style, normal) !important;
+  font-weight: var(--shiki-dark-font-weight, inherit) !important;
+  text-decoration: var(--shiki-dark-text-decoration, none) !important;
+}
 pre > code {
   display: block;
   min-width: max-content;

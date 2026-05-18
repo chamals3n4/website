@@ -8,6 +8,34 @@ import { defineConfig, fontProviders } from 'astro/config';
 export default defineConfig({
 	site: 'https://example.com',
 	integrations: [mdx(), sitemap()],
+	markdown: {
+		syntaxHighlight: {
+			type: 'shiki',
+			excludeLangs: ['math'],
+		},
+		shikiConfig: {
+			themes: {
+				light: 'github-light',
+				dark: 'github-dark',
+			},
+			langAlias: {
+				bash: 'shellscript',
+				shell: 'shellscript',
+				sh: 'shellscript',
+				zsh: 'shellscript',
+				yml: 'yaml',
+			},
+			transformers: [
+				{
+					name: 'code-language-attribute',
+					pre(node) {
+						node.properties ??= {};
+						node.properties['data-language'] = this.options.lang;
+					},
+				},
+			],
+		},
+	},
 	fonts: [
 		{
 			provider: fontProviders.local(),
