@@ -98,6 +98,35 @@ const {
 				font-size: 16px;
 				line-height: 1.35;
 			}
+			.prose :global(.code-block) {
+				position: relative;
+				display: block;
+				width: 100%;
+				margin: 0 0 1.35rem;
+			}
+			.prose :global(.code-block pre) {
+				margin: 0;
+				padding-top: 2.75rem;
+				padding-right: 1rem;
+			}
+			.prose :global(.copy-code) {
+				position: absolute;
+				top: 0.65rem;
+				right: 0.65rem;
+				z-index: 1;
+				border: 1px solid var(--code-block-border);
+				border-radius: 4px;
+				padding: 0.22rem 0.48rem;
+				background: var(--surface);
+				color: var(--accent);
+				font: 12px/1.4 "Roboto Mono", "Courier New", monospace;
+				cursor: pointer;
+			}
+			.prose :global(.copy-code:hover),
+			.prose :global(.copy-code:focus-visible) {
+				color: var(--text);
+				border-color: var(--accent);
+			}
 		</style>
 	</head>
 
@@ -140,10 +169,51 @@ const {
 						</div>
 						<hr />
 					</div>
+					{
+						variant === 'article' && heroImage && (
+							<div class="hero-image">
+								<Image width={1020} height={510} src={heroImage} alt={title} />
+							</div>
+						)
+					}
 					<slot />
 				</div>
 			</article>
 		</main>
 		<Footer />
+		<script>
+			const codeBlocks = document.querySelectorAll('.prose pre');
+
+			codeBlocks.forEach((pre) => {
+				if (pre.parentElement?.classList.contains('code-block')) return;
+
+				const wrapper = document.createElement('div');
+				wrapper.className = 'code-block';
+				pre.parentNode?.insertBefore(wrapper, pre);
+				wrapper.appendChild(pre);
+
+				const button = document.createElement('button');
+				button.className = 'copy-code';
+				button.type = 'button';
+				button.textContent = 'Copy';
+				button.setAttribute('aria-label', 'Copy code');
+				wrapper.appendChild(button);
+
+				button.addEventListener('click', async () => {
+					const code = pre.querySelector('code')?.textContent ?? pre.textContent ?? '';
+
+					try {
+						await navigator.clipboard.writeText(code);
+						button.textContent = 'Copied';
+					} catch {
+						button.textContent = 'Failed';
+					}
+
+					window.setTimeout(() => {
+						button.textContent = 'Copy';
+					}, 1600);
+				});
+			});
+		</script>
 	</body>
 </html>
