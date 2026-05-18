@@ -18,8 +18,8 @@ const posts = (await getCollection('blog')).sort(
 		<style>
 			main {
 				width: 100%;
-				max-width: 100%;
-				margin-top: 0.5rem;
+				max-width: var(--page-width);
+				margin-top: 1.25rem;
 			}
 			.post-list {
 				list-style: none;
@@ -27,47 +27,49 @@ const posts = (await getCollection('blog')).sort(
 				padding: 0;
 			}
 			.post-row {
-				display: flex;
-				flex-wrap: wrap;
-				align-items: baseline;
-				column-gap: 0.75rem;
-				row-gap: 0.15rem;
-				margin: 0 0 0.85rem 0;
-				line-height: 1.5;
+				margin: 0;
+				border: 1px solid var(--border);
+				background: var(--surface);
+				line-height: 1.45;
+				transition: border-color 500ms ease;
+				cursor: pointer;
+			}
+			.post-row:hover {
+				border-color: var(--accent);
 			}
 			.post-date {
-				flex: 0 0 6.25rem;
-				min-width: 6.25rem;
-				margin: 0;
-				padding: 0;
-				font-style: italic;
+				margin: 6px 0 0;
 				font-weight: 400;
-				color: #555;
-				font-size: 1em;
+				color: var(--muted);
+				font-size: 13px;
 			}
 			.post-title-link {
-				color: #3273dc;
-				text-decoration: underline;
-				font-weight: 400;
-				flex: 1 1 auto;
-				min-width: 0;
+				display: block;
+				padding: 20px 24px;
+				color: inherit;
+				text-decoration: none;
 			}
 			.post-title-link:hover {
-				color: #3273dc;
+				color: inherit;
 			}
 			.post-title-link:visited {
-				color: #609;
+				color: inherit;
+			}
+			.post-title {
+				display: inline-block;
+				color: var(--accent);
+				font-size: 16px;
+				font-weight: 700;
+				line-height: 1.35;
+			}
+			.post-description {
+				margin: 3px 0 0;
+				font-size: 14px;
+				color: var(--text);
 			}
 			@media (max-width: 720px) {
-				.post-row {
-					flex-direction: column;
-					align-items: flex-start;
-					column-gap: 0;
-					margin-bottom: 1rem;
-				}
-				.post-date {
-					flex: none;
-					min-width: 0;
+				.post-title-link {
+					padding: 18px;
 				}
 			}
 		</style>
@@ -79,11 +81,12 @@ const posts = (await getCollection('blog')).sort(
 				{
 					posts.map((post) => (
 						<li class="post-row">
-							<div class="post-date">
-								<FormattedDate date={post.data.pubDate} />
-							</div>
 							<a class="post-title-link" href={`/blog/${post.id}/`}>
-								{post.data.title}
+								<span class="post-title">{post.data.title}</span>
+								<p class="post-description">{post.data.description}</p>
+								<div class="post-date">
+									<FormattedDate date={post.data.pubDate} />
+								</div>
 							</a>
 						</li>
 					))
