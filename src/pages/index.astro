@@ -4,12 +4,38 @@ import Footer from "../components/Footer.astro";
 import Header from "../components/Header.astro";
 import ProfileImage from "../assets/blog-placeholder-about.jpg";
 import { SITE_DESCRIPTION, SITE_TITLE } from "../consts";
+
+const personSchema = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: "Chamal Senarathna",
+  alternateName: "chamalsena",
+  url: Astro.site?.toString(),
+  jobTitle: "Full Stack Developer",
+  description:
+    "Chamal Senarathna is a full stack developer, SLIIT software engineering student, and open source contributor from Sri Lanka.",
+  alumniOf: {
+    "@type": "CollegeOrUniversity",
+    name: "Sri Lanka Institute of Information Technology (SLIIT)",
+  },
+  sameAs: [
+    "https://x.com/chamalsena",
+    "https://github.com/chamals3n4",
+    "https://instagram.com/chamalsena",
+    "https://linkedin.com/in/chamalsena",
+  ],
+};
 ---
 
 <!doctype html>
 <html lang="en">
   <head>
-    <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+    <BaseHead
+      title={`${SITE_TITLE} - Full Stack Developer & SLIIT Software Engineer`}
+      description="Chamal Senarathna's personal site - full stack developer, SLIIT software engineering student, and open source contributor from Sri Lanka. Projects, blog posts, and tools."
+      keywords="Chamal Senarathna, chamalsena, chamal senarathna software engineer, chamal senarathna sri lanka, chamal senarathna developer, chamal senarathna github, chamal senarathna portfolio, full stack developer Sri Lanka, SLIIT software engineering, SLIIT SE, open source contributor Sri Lanka, open source developer Sri Lanka"
+    />
+    <script type="application/ld+json" set:html={JSON.stringify(personSchema)} />
   </head>
   <body>
     <Header />

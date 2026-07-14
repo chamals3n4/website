@@ -1,0 +1,671 @@
+---
+import BaseHead from '../../components/BaseHead.astro';
+
+const softwareAppSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'WebApplication',
+	name: 'EPF / ETF Calculator Sri Lanka',
+	applicationCategory: 'FinanceApplication',
+	operatingSystem: 'Any',
+	url: new URL('/tools/epf-etf-calculator', Astro.site).toString(),
+	description:
+		'Free online EPF and ETF calculator for Sri Lanka. Calculate employee and employer EPF contribution, ETF contribution, take-home salary, and total cost to company based on your basic salary.',
+	offers: {
+		'@type': 'Offer',
+		price: '0',
+		priceCurrency: 'LKR',
+	},
+	author: {
+		'@type': 'Person',
+		name: 'Chamal Senarathna',
+	},
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	mainEntity: [
+		{
+			'@type': 'Question',
+			name: 'What is the EPF contribution rate in Sri Lanka?',
+			acceptedAnswer: {
+				'@type': 'Answer',
+				text: 'In Sri Lanka, the standard EPF contribution is 8% from the employee and 12% from the employer, totaling 20% of the basic salary.',
+			},
+		},
+		{
+			'@type': 'Question',
+			name: 'What is the ETF contribution rate in Sri Lanka?',
+			acceptedAnswer: {
+				'@type': 'Answer',
+				text: 'The Employees Trust Fund (ETF) contribution in Sri Lanka is 3% of the basic salary, paid entirely by the employer.',
+			},
+		},
+		{
+			'@type': 'Question',
+			name: 'How is take-home salary calculated after EPF deduction?',
+			acceptedAnswer: {
+				'@type': 'Answer',
+				text: 'Take-home salary is your basic salary minus the 8% employee EPF contribution. For example, on a basic salary of LKR 100,000, LKR 8,000 is deducted for EPF, leaving a take-home salary of LKR 92,000.',
+			},
+		},
+	],
+};
+---
+
+<html lang="en">
+	<head>
+		<BaseHead
+			title="EPF / ETF Calculator Sri Lanka - Take-Home Salary Calculator"
+			description="Free EPF/ETF calculator for Sri Lanka. Instantly see your EPF deduction, ETF contribution, employer cost, and real take-home salary from your basic salary."
+			keywords="EPF calculator, ETF calculator, EPF ETF calculator Sri Lanka, take home salary calculator Sri Lanka, EPF calculator Sri Lanka, ETF calculator Sri Lanka, salary calculator Sri Lanka, net salary calculator, EPF contribution calculator, employee provident fund calculator, Chamal Senarathna tools"
+		/>
+		<script type="application/ld+json" set:html={JSON.stringify(softwareAppSchema)} />
+		<script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+		<script is:inline>
+			document.documentElement.dataset.theme = "light";
+		</script>
+		<style>
+			:root {
+				--accent: #7a1128;
+				--accent-dark: #5c0c1e;
+				--text: #16181d;
+				--muted: #6b7280;
+				--border: #e8e8ec;
+				--surface: #fff;
+				--surface-alt: #faf5f6;
+				--input-bg: #f5eef0;
+				--input-border: #e2c9cf;
+				--green: #15803d;
+				--green-bg: #dcfce7;
+				color-scheme: light;
+			}
+			body {
+				display: block;
+				padding: 0;
+				background: var(--surface-alt);
+				color: var(--text);
+			}
+			main {
+				max-width: 620px;
+				margin: 0 auto;
+				padding: 2.5rem 1.25rem 5rem;
+			}
+			a.back {
+				display: inline-flex;
+				align-items: center;
+				gap: 0.35rem;
+				margin-bottom: 1.75rem;
+				font-size: 13px;
+				color: var(--muted);
+			}
+			a.back:hover {
+				color: var(--accent);
+			}
+			a.back svg {
+				width: 15px;
+				height: 15px;
+			}
+			header.page-header {
+				margin-bottom: 1.75rem;
+			}
+			h1 {
+				font-size: 26px;
+				letter-spacing: -0.01em;
+				margin-bottom: 0.35rem;
+			}
+			.subtitle {
+				color: var(--muted);
+				font-size: 14px;
+				max-width: 60ch;
+			}
+
+			.card {
+				background: var(--surface);
+				border: 1px solid var(--border);
+				border-radius: 4px;
+				box-shadow: 0 1px 2px rgba(16, 24, 40, 0.04);
+				padding: 1.75rem;
+				margin-bottom: 1.25rem;
+			}
+
+			.field {
+				margin-bottom: 1.25rem;
+			}
+			.field:last-child {
+				margin-bottom: 0;
+			}
+			label {
+				display: block;
+				font-size: 13px;
+				font-weight: 600;
+				margin-bottom: 0.4rem;
+				color: var(--text);
+			}
+			.salary-input {
+				position: relative;
+			}
+			.salary-input span {
+				position: absolute;
+				left: 0.9rem;
+				top: 50%;
+				transform: translateY(-50%);
+				color: var(--muted);
+				font-size: 15px;
+				font-weight: 600;
+				pointer-events: none;
+			}
+			.salary-input input {
+				padding-left: 3.1rem;
+				font-size: 18px;
+				font-weight: 700;
+			}
+			input {
+				width: 100%;
+				padding: 0.65rem 0.8rem;
+				border: 1px solid var(--input-border);
+				border-radius: 4px;
+				background: var(--input-bg);
+				color: var(--text);
+				transition: border-color 0.15s ease;
+			}
+			input:focus {
+				outline: none;
+				border-color: var(--accent);
+			}
+
+			.rates-header {
+				display: flex;
+				align-items: baseline;
+				justify-content: space-between;
+				margin-bottom: 1rem;
+			}
+			.rates-header h2 {
+				font-size: 13px;
+				font-weight: 700;
+				text-transform: uppercase;
+				letter-spacing: 0.04em;
+				color: var(--muted);
+			}
+			.rates-header .hint {
+				font-size: 11px;
+				color: var(--muted);
+			}
+			.rate-grid {
+				display: grid;
+				grid-template-columns: repeat(3, 1fr);
+				gap: 0.85rem;
+			}
+			.rate-grid label {
+				font-size: 12px;
+				color: var(--muted);
+				font-weight: 600;
+			}
+			.rate-input {
+				position: relative;
+			}
+			.rate-input input {
+				padding-right: 1.8rem;
+				text-align: right;
+				font-weight: 600;
+			}
+			.rate-input span {
+				position: absolute;
+				right: 0.7rem;
+				top: 50%;
+				transform: translateY(-50%);
+				color: var(--muted);
+				font-size: 13px;
+			}
+
+			button.calculate {
+				width: 100%;
+				padding: 0.85rem;
+				font-size: 15px;
+				font-weight: 700;
+				border: none;
+				border-radius: 4px;
+				background: linear-gradient(180deg, var(--accent), var(--accent-dark));
+				color: #fff;
+				cursor: pointer;
+				box-shadow: 0 1px 2px rgba(122, 17, 40, 0.25);
+				transition: transform 0.08s ease, box-shadow 0.15s ease;
+			}
+			button.calculate:hover {
+				box-shadow: 0 4px 10px rgba(122, 17, 40, 0.3);
+			}
+			button.calculate:active {
+				transform: translateY(1px);
+			}
+
+			#result {
+				display: none;
+				margin-top: 1.5rem;
+			}
+			#result.visible {
+				display: block;
+				animation: fade-in 0.25s ease;
+			}
+			@keyframes fade-in {
+				from {
+					opacity: 0;
+					transform: translateY(4px);
+				}
+				to {
+					opacity: 1;
+					transform: translateY(0);
+				}
+			}
+
+			.section-title {
+				font-size: 12px;
+				font-weight: 700;
+				text-transform: uppercase;
+				letter-spacing: 0.04em;
+				color: var(--muted);
+				margin: 2rem 0 0.75rem;
+			}
+			.section-title:first-of-type {
+				margin-top: 0;
+			}
+
+			.hero-card {
+				background: var(--green-bg);
+				border: 1px solid #86efac;
+				border-radius: 4px;
+				padding: 1.5rem 1.75rem;
+				text-align: center;
+			}
+			.hero-card .hero-label {
+				font-size: 13px;
+				font-weight: 600;
+				color: var(--green);
+				margin-bottom: 0.35rem;
+			}
+			.hero-card .hero-value {
+				font-size: 32px;
+				font-weight: 800;
+				letter-spacing: -0.01em;
+				color: var(--text);
+			}
+			.hero-card .hero-sub {
+				font-size: 13px;
+				color: var(--muted);
+				margin-top: 0.5rem;
+			}
+
+			.line {
+				display: flex;
+				justify-content: space-between;
+				align-items: baseline;
+				font-size: 14px;
+				padding: 0.45rem 0;
+			}
+			.line + .line {
+				border-top: 1px solid var(--border);
+			}
+			.line.total {
+				margin-top: 0.2rem;
+				padding-top: 0.7rem;
+				font-weight: 700;
+				border-top: 1px solid var(--border);
+			}
+			.line .label {
+				color: var(--muted);
+			}
+			.line.total .label {
+				color: var(--text);
+			}
+			.line span:last-child {
+				font-variant-numeric: tabular-nums;
+				font-weight: 600;
+			}
+
+			.summary-grid {
+				display: grid;
+				grid-template-columns: 1fr 1fr;
+				gap: 0.85rem;
+			}
+			.stat {
+				background: var(--input-bg);
+				border: 1px solid var(--border);
+				border-radius: 4px;
+				padding: 0.9rem 1rem;
+			}
+			.stat .stat-label {
+				font-size: 11px;
+				color: var(--muted);
+				font-weight: 600;
+				text-transform: uppercase;
+				letter-spacing: 0.03em;
+				margin-bottom: 0.3rem;
+			}
+			.stat .stat-value {
+				font-size: 17px;
+				font-weight: 700;
+				font-variant-numeric: tabular-nums;
+			}
+			.stat.wide {
+				grid-column: 1 / -1;
+			}
+			.stat.accent .stat-value {
+				color: var(--accent-dark);
+			}
+
+			.growth-list {
+				display: flex;
+				flex-direction: column;
+			}
+			.growth-list :global(.growth-row) {
+				display: grid;
+				grid-template-columns: 1.2fr 1fr 1fr 1fr;
+				gap: 0.5rem;
+				padding: 0.6rem 0;
+				border-bottom: 1px solid var(--border);
+				font-size: 13px;
+			}
+			.growth-list :global(.growth-row span) {
+				text-align: right;
+				font-variant-numeric: tabular-nums;
+			}
+			.growth-list :global(.growth-row span:first-child) {
+				text-align: left;
+				color: var(--muted);
+				font-weight: 500;
+			}
+			.growth-header {
+				font-size: 11px;
+				font-weight: 700;
+				text-transform: uppercase;
+				letter-spacing: 0.03em;
+				color: var(--muted);
+			}
+			.growth-header :global(span:first-child) {
+				color: var(--muted);
+				font-weight: 700;
+			}
+			#proj-body :global(.growth-row:last-child) {
+				border-bottom: none;
+			}
+			#proj-body :global(.growth-row:last-child span) {
+				font-weight: 700;
+			}
+
+			.note {
+				font-size: 12px;
+				color: var(--muted);
+				margin-top: 0.85rem;
+			}
+
+			.faq {
+				margin-top: 2.5rem;
+			}
+			.faq h2 {
+				font-size: 18px;
+				margin-bottom: 1rem;
+			}
+			.faq-item {
+				margin-bottom: 1.25rem;
+			}
+			.faq-item h3 {
+				font-size: 14px;
+				margin-bottom: 0.35rem;
+			}
+			.faq-item p {
+				font-size: 13px;
+				color: var(--muted);
+				line-height: 1.6;
+				margin: 0;
+			}
+
+			@media (max-width: 480px) {
+				.rate-grid {
+					grid-template-columns: 1fr;
+				}
+				.summary-grid {
+					grid-template-columns: 1fr;
+				}
+			}
+		</style>
+	</head>
+	<body>
+		<main>
+			<a class="back" href="/tools">
+				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 19-7-7 7-7"></path><path d="M19 12H5"></path></svg>
+				Back to tools
+			</a>
+
+			<header class="page-header">
+				<h1>EPF / ETF Calculator</h1>
+				<p class="subtitle">
+					See exactly what gets deducted, what your employer contributes, and
+					your real take-home salary - based on Sri Lankan EPF/ETF rates.
+				</p>
+			</header>
+
+			<form id="calc-form">
+				<div class="card">
+					<div class="field">
+						<label for="salary">Basic Salary</label>
+						<div class="salary-input">
+							<span>LKR</span>
+							<input
+								type="number"
+								id="salary"
+								min="0"
+								step="any"
+								required
+							/>
+						</div>
+					</div>
+
+					<div class="field">
+						<div class="rates-header">
+							<h2>Contribution Rates</h2>
+							<span class="hint">Standard defaults, editable</span>
+						</div>
+						<div class="rate-grid">
+							<div>
+								<label for="epf-employee">EPF Employee</label>
+								<div class="rate-input">
+									<input type="number" id="epf-employee" value="8" min="0" step="any" />
+									<span>%</span>
+								</div>
+							</div>
+							<div>
+								<label for="epf-employer">EPF Employer</label>
+								<div class="rate-input">
+									<input type="number" id="epf-employer" value="12" min="0" step="any" />
+									<span>%</span>
+								</div>
+							</div>
+							<div>
+								<label for="etf-employer">ETF Employer</label>
+								<div class="rate-input">
+									<input type="number" id="etf-employer" value="3" min="0" step="any" />
+									<span>%</span>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<button class="calculate" type="submit">Calculate</button>
+			</form>
+
+			<div id="result">
+				<div class="section-title">Take-Home</div>
+				<div class="hero-card">
+					<div class="hero-label">Net Take-Home Salary</div>
+					<div class="hero-value" id="r-takehome">&nbsp;</div>
+					<div class="hero-sub" id="r-takehome-sub">&nbsp;</div>
+				</div>
+
+				<div class="section-title">Breakdown</div>
+				<div class="card">
+					<div class="line">
+						<span class="label">Basic Salary</span>
+						<span id="r-salary"></span>
+					</div>
+					<div class="line">
+						<span class="label">EPF Employee Contribution</span>
+						<span id="r-epf-employee-deduction"></span>
+					</div>
+					<div class="line total">
+						<span class="label">Net Take-Home</span>
+						<span id="r-takehome-2"></span>
+					</div>
+				</div>
+
+				<div class="section-title">Employer Cost</div>
+				<div class="card">
+					<div class="line">
+						<span class="label">Basic Salary</span>
+						<span id="r-salary-2"></span>
+					</div>
+					<div class="line">
+						<span class="label">EPF Employer Contribution</span>
+						<span id="r-epf-employer"></span>
+					</div>
+					<div class="line">
+						<span class="label">ETF Employer Contribution</span>
+						<span id="r-etf-employer"></span>
+					</div>
+					<div class="line total">
+						<span class="label">Total Cost to Company</span>
+						<span id="r-company-cost"></span>
+					</div>
+				</div>
+
+				<div class="section-title">Monthly Fund Contribution</div>
+				<div class="card">
+					<div class="summary-grid">
+						<div class="stat">
+							<div class="stat-label">Total EPF</div>
+							<div class="stat-value" id="r-epf-total"></div>
+						</div>
+						<div class="stat">
+							<div class="stat-label">Total ETF</div>
+							<div class="stat-value" id="r-etf-total"></div>
+						</div>
+						<div class="stat wide accent">
+							<div class="stat-label">Total Retirement / Month</div>
+							<div class="stat-value" id="r-retirement-total"></div>
+						</div>
+					</div>
+				</div>
+
+				<div class="section-title">Fund Growth Over Time</div>
+				<div class="card">
+					<div class="growth-list">
+						<div class="growth-row growth-header">
+							<span>Period</span>
+							<span>EPF</span>
+							<span>ETF</span>
+							<span>Total</span>
+						</div>
+						<div id="proj-body"></div>
+					</div>
+					<p class="note">No compounding/interest applied - simple monthly contribution &times; months.</p>
+				</div>
+			</div>
+
+			<section class="faq">
+				<h2>Frequently Asked Questions</h2>
+				<div class="faq-item">
+					<h3>What is the EPF contribution rate in Sri Lanka?</h3>
+					<p>
+						The standard EPF contribution in Sri Lanka is 8% from the employee
+						and 12% from the employer, totaling 20% of the basic salary.
+					</p>
+				</div>
+				<div class="faq-item">
+					<h3>What is the ETF contribution rate in Sri Lanka?</h3>
+					<p>
+						The Employees' Trust Fund (ETF) contribution is 3% of the basic
+						salary, paid entirely by the employer.
+					</p>
+				</div>
+				<div class="faq-item">
+					<h3>How is take-home salary calculated after EPF deduction?</h3>
+					<p>
+						Take-home salary is your basic salary minus the 8% employee EPF
+						contribution. For example, on a basic salary of LKR 100,000, LKR
+						8,000 is deducted for EPF, leaving a take-home salary of LKR
+						92,000.
+					</p>
+				</div>
+			</section>
+		</main>
+
+		<script>
+			const form = document.getElementById('calc-form') as HTMLFormElement;
+			const resultEl = document.getElementById('result') as HTMLElement;
+			const projBody = document.getElementById('proj-body') as HTMLElement;
+			const PERIODS = [
+				{ label: '6 Months', months: 6 },
+				{ label: '1 Year', months: 12 },
+				{ label: '2 Years', months: 24 },
+				{ label: '5 Years', months: 60 },
+			];
+
+			const fmt = (n: number) =>
+				'LKR ' +
+				n.toLocaleString('en-LK', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+			const setText = (id: string, value: string) => {
+				const el = document.getElementById(id);
+				if (el) el.textContent = value;
+			};
+
+			form.addEventListener('submit', (e) => {
+				e.preventDefault();
+
+				const salary = parseFloat((document.getElementById('salary') as HTMLInputElement).value) || 0;
+				const epfEmployeePct = parseFloat((document.getElementById('epf-employee') as HTMLInputElement).value) || 0;
+				const epfEmployerPct = parseFloat((document.getElementById('epf-employer') as HTMLInputElement).value) || 0;
+				const etfEmployerPct = parseFloat((document.getElementById('etf-employer') as HTMLInputElement).value) || 0;
+
+				const epfEmployeeAmount = (salary * epfEmployeePct) / 100;
+				const epfEmployerAmount = (salary * epfEmployerPct) / 100;
+				const etfEmployerAmount = (salary * etfEmployerPct) / 100;
+
+				const takeHome = salary - epfEmployeeAmount;
+				const companyCost = salary + epfEmployerAmount + etfEmployerAmount;
+				const epfTotal = epfEmployeeAmount + epfEmployerAmount;
+				const etfTotal = etfEmployerAmount;
+				const retirementTotal = epfTotal + etfTotal;
+
+				setText('r-takehome', fmt(takeHome));
+				setText('r-takehome-sub', `${epfEmployeePct}% (${fmt(epfEmployeeAmount)}) deducted for EPF`);
+
+				setText('r-salary', fmt(salary));
+				setText('r-epf-employee-deduction', '- ' + fmt(epfEmployeeAmount));
+				setText('r-takehome-2', fmt(takeHome));
+
+				setText('r-salary-2', fmt(salary));
+				setText('r-epf-employer', '+ ' + fmt(epfEmployerAmount));
+				setText('r-etf-employer', '+ ' + fmt(etfEmployerAmount));
+				setText('r-company-cost', fmt(companyCost));
+
+				setText('r-epf-total', fmt(epfTotal));
+				setText('r-etf-total', fmt(etfTotal));
+				setText('r-retirement-total', fmt(retirementTotal));
+
+				projBody.innerHTML = PERIODS.map(({ label, months }) => {
+					const projEpf = epfTotal * months;
+					const projEtf = etfTotal * months;
+					return `<div class="growth-row">
+						<span>${label}</span>
+						<span>${fmt(projEpf)}</span>
+						<span>${fmt(projEtf)}</span>
+						<span>${fmt(projEpf + projEtf)}</span>
+					</div>`;
+				}).join('');
+
+				resultEl.classList.add('visible');
+				resultEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+			});
+		</script>
+	</body>
+</html>
