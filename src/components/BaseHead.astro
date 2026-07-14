@@ -1,6 +1,7 @@
 ---
 import "../styles/global.css";
 import type { ImageMetadata } from "astro";
+import { ClientRouter } from "astro:transitions";
 import FallbackImage from "../assets/blog-placeholder-3.jpg";
 import { SITE_TITLE } from "../consts";
 
@@ -24,13 +25,18 @@ const {
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <script is:inline>
-    const savedTheme = localStorage.getItem("theme");
-    const systemTheme = window.matchMedia("(prefers-color-scheme: dark)")
-        .matches
-        ? "dark"
-        : "light";
+    function applyTheme() {
+        const savedTheme = localStorage.getItem("theme");
+        const systemTheme = window.matchMedia("(prefers-color-scheme: dark)")
+            .matches
+            ? "dark"
+            : "light";
 
-    document.documentElement.dataset.theme = savedTheme ?? systemTheme;
+        document.documentElement.dataset.theme = savedTheme ?? systemTheme;
+    }
+
+    applyTheme();
+    document.addEventListener("astro:after-swap", applyTheme);
 </script>
 <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 <link rel="icon" href="/favicon.ico" />
@@ -72,3 +78,5 @@ const {
 <meta property="twitter:title" content={title} />
 <meta property="twitter:description" content={description} />
 <meta property="twitter:image" content={new URL(image.src, Astro.url)} />
+
+<ClientRouter />

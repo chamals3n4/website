@@ -321,6 +321,12 @@ hr {
   }
 }
 
+@media (max-width: 480px) {
+  .project-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
 .project-card {
   display: flex;
   flex-direction: column;
@@ -404,4 +410,11 @@ hr {
   clip: rect(1px, 1px, 1px, 1px);
   clip-path: inset(50%);
   white-space: nowrap;
+}
+
+/* Disable the default view-transition crossfade so navigation swaps instantly. */
+::view-transition-group(*),
+::view-transition-old(*),
+::view-transition-new(*) {
+  animation: none !important;
 }

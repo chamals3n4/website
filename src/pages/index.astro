@@ -2,7 +2,7 @@
 import BaseHead from "../components/BaseHead.astro";
 import Footer from "../components/Footer.astro";
 import Header from "../components/Header.astro";
-import ProfileImage from "../assets/blog-placeholder-about.jpg";
+import ProfileImage from "../assets/me.jpeg";
 import { SITE_DESCRIPTION, SITE_TITLE } from "../consts";
 
 const personSchema = {
@@ -38,7 +38,7 @@ const personSchema = {
     <script type="application/ld+json" set:html={JSON.stringify(personSchema)} />
   </head>
   <body>
-    <Header />
+    <Header transition:persist transition:name="site-header" />
     <main>
       <section class="about-layout">
         <div class="about-copy">
@@ -130,6 +130,6 @@ const personSchema = {
         </figure>
       </section>
     </main>
-    <Footer />
+    <Footer transition:persist transition:name="site-footer" />
   </body>
 </html>

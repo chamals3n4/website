@@ -121,7 +121,7 @@ const posts = (await getCollection('blog')).sort(
 		</style>
 	</head>
 	<body>
-		<Header />
+		<Header transition:persist transition:name="site-header" />
 		<main>
 			<div class="search-field">
 				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
@@ -153,7 +153,7 @@ const posts = (await getCollection('blog')).sort(
 			</ul>
 			<p class="no-results" data-blog-empty>No posts found.</p>
 		</main>
-		<Footer />
+		<Footer transition:persist transition:name="site-footer" />
 		<script>
 			const blogSearch = document.querySelector('[data-blog-search]');
 			const postRows = Array.from(document.querySelectorAll('.post-row'));

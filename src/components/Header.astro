@@ -3,13 +3,15 @@ import { SITE_TITLE } from "../consts";
 import HeaderLink from "./HeaderLink.astro";
 ---
 
+<div class="header-root" {...Astro.props}>
 <header class="site-header">
   <div class="nav-bar">
     <h2 class="site-title"><a href="/">{SITE_TITLE}</a></h2>
-    <nav class="site-nav" aria-label="Main navigation">
-      <HeaderLink href="/">about</HeaderLink>
-      <HeaderLink href="/blog">blog</HeaderLink>
-      <HeaderLink href="/projects">projects</HeaderLink>
+    <nav class="site-nav" aria-label="Main navigation" data-site-nav>
+      <HeaderLink href="/">About</HeaderLink>
+      <HeaderLink href="/blog">Blog</HeaderLink>
+      <HeaderLink href="/projects">Projects</HeaderLink>
+      <HeaderLink href="/tools">Tools</HeaderLink>
     </nav>
     <button class="site-search" type="button" aria-label="Open search" data-search-open>
       <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
@@ -18,6 +20,10 @@ import HeaderLink from "./HeaderLink.astro";
     </button>
     <button class="theme-button" type="button" aria-label="Toggle theme" data-theme-toggle>
       ◔
+    </button>
+    <button class="menu-toggle" type="button" aria-label="Toggle menu" aria-expanded="false" data-menu-toggle>
+      <svg class="icon-menu" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16"></path><path d="M4 12h16"></path><path d="M4 18h16"></path></svg>
+      <svg class="icon-close" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg>
     </button>
   </div>
 </header>
@@ -35,6 +41,7 @@ import HeaderLink from "./HeaderLink.astro";
       <a class="search-result is-active" href="/">About</a>
       <a class="search-result" href="/blog">Blog</a>
       <a class="search-result" href="/projects">Projects</a>
+      <a class="search-result" href="/tools">Tools</a>
     </nav>
     <div class="search-help" aria-hidden="true">
       <span><kbd>↵</kbd> to select</span>
@@ -48,13 +55,45 @@ import HeaderLink from "./HeaderLink.astro";
     <path d="M12 5 5.5 11.5l1.4 1.4 4.1-4.1V20h2V8.8l4.1 4.1 1.4-1.4L12 5Z" />
   </svg>
 </button>
+</div>
 <script>
+  const updateActiveNavLink = () => {
+    const pathname = window.location.pathname.replace(import.meta.env.BASE_URL, "");
+    const subpath = pathname.match(/[^\/]+/g);
+
+    document.querySelectorAll(".site-nav a").forEach((link) => {
+      const href = link.getAttribute("href");
+      const isActive = href === pathname || href === "/" + (subpath?.[0] || "");
+      link.classList.toggle("active", Boolean(isActive));
+    });
+  };
+
+  document.addEventListener("astro:page-load", updateActiveNavLink);
+
   const themeToggle = document.querySelector("[data-theme-toggle]");
   const searchOpen = document.querySelector("[data-search-open]");
   const searchOverlay = document.querySelector("[data-search-overlay]");
   const searchInput = document.querySelector("[data-search-input]");
   const searchResults = Array.from(document.querySelectorAll(".search-result"));
   const scrollTopButton = document.querySelector("[data-scroll-top]");
+  const menuToggle = document.querySelector("[data-menu-toggle]");
+  const siteNav = document.querySelector("[data-site-nav]");
+
+  const closeMenu = () => {
+    siteNav?.classList.remove("is-open");
+    menuToggle?.setAttribute("aria-expanded", "false");
+  };
+
+  menuToggle?.addEventListener("click", () => {
+    const isOpen = siteNav?.classList.toggle("is-open");
+    menuToggle.setAttribute("aria-expanded", String(Boolean(isOpen)));
+  });
+
+  siteNav?.addEventListener("click", (event) => {
+    if (event.target instanceof HTMLAnchorElement) closeMenu();
+  });
+
+  document.addEventListener("astro:page-load", closeMenu);
 
   themeToggle?.addEventListener("click", () => {
     const nextTheme =
@@ -94,6 +133,12 @@ import HeaderLink from "./HeaderLink.astro";
     if (event.target === searchOverlay) closeSearch();
   });
 
+  document.addEventListener("click", (event) => {
+    if (!siteNav?.classList.contains("is-open")) return;
+    if (event.target instanceof Node && (siteNav.contains(event.target) || menuToggle?.contains(event.target))) return;
+    closeMenu();
+  });
+
   document.addEventListener("keydown", (event) => {
     const isSearchShortcut = (event.metaKey || event.ctrlKey) && event.key.toLowerCase() === "k";
 
@@ -102,6 +147,8 @@ import HeaderLink from "./HeaderLink.astro";
       openSearch();
       return;
     }
+
+    if (event.key === "Escape") closeMenu();
 
     if (!searchOverlay?.classList.contains("is-open")) return;
 
@@ -240,6 +287,11 @@ import HeaderLink from "./HeaderLink.astro";
   }
   .theme-button {
     flex: 0 0 auto;
+    width: 40px;
+    height: 40px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     font-size: 22px;
     line-height: 1;
   }
@@ -379,6 +431,33 @@ import HeaderLink from "./HeaderLink.astro";
     display: block;
     fill: currentColor;
   }
+  .menu-toggle {
+    display: none;
+    flex: 0 0 auto;
+    width: 40px;
+    height: 40px;
+    align-items: center;
+    justify-content: center;
+    border: 0;
+    padding: 0;
+    background: transparent;
+    color: var(--text);
+    cursor: pointer;
+    appearance: none;
+  }
+  .menu-toggle svg {
+    width: 22px;
+    height: 22px;
+  }
+  .menu-toggle .icon-close {
+    display: none;
+  }
+  .menu-toggle[aria-expanded="true"] .icon-menu {
+    display: none;
+  }
+  .menu-toggle[aria-expanded="true"] .icon-close {
+    display: block;
+  }
   @media (max-width: 900px) {
     .nav-bar {
       max-width: none;
@@ -390,6 +469,14 @@ import HeaderLink from "./HeaderLink.astro";
       overflow-x: auto;
     }
     .site-search {
+      flex: 0 0 auto;
+      width: 40px;
+      height: 40px;
+      padding: 0;
+      justify-content: center;
+    }
+    .site-search-placeholder,
+    .site-search kbd {
       display: none;
     }
     .scroll-top {
@@ -397,6 +484,59 @@ import HeaderLink from "./HeaderLink.astro";
       bottom: 58px;
       width: 40px;
       height: 40px;
+    }
+  }
+  @media (max-width: 640px) {
+    .nav-bar {
+      position: relative;
+    }
+    .menu-toggle {
+      display: inline-flex;
+    }
+    .site-nav {
+      position: absolute;
+      top: calc(100% + 1px);
+      left: 0;
+      right: 0;
+      z-index: 90;
+      display: none;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 2px;
+      overflow-x: visible;
+      padding: 0.6rem;
+      border-bottom: 1px solid var(--border);
+      background: var(--surface);
+      box-shadow: 0 16px 32px rgba(0, 0, 0, 0.18);
+    }
+    .site-nav.is-open {
+      display: flex;
+    }
+    .site-nav :global(a) {
+      width: 100%;
+      border-radius: 4px;
+      padding: 0.85rem 0.9rem;
+      font-size: 14px;
+      font-weight: 600;
+    }
+    .site-nav :global(a.active) {
+      background: var(--surface-alt, var(--code-bg));
+    }
+    .site-nav :global(a:hover) {
+      background: var(--code-bg);
+    }
+  }
+  @media (max-width: 420px) {
+    .nav-bar {
+      gap: 0.6rem;
+    }
+    .site-title {
+      flex: 1 1 auto;
+      min-width: 0;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      font-size: 15px;
     }
   }
 </style>

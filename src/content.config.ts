@@ -44,16 +44,18 @@ const optionalHref = z.preprocess(
 
 const projects = defineCollection({
 	loader: glob({ base: 'src/content/projects', pattern: '**/*.{md,mdx}' }),
-	schema: z.object({
-		title: z.string(),
-		description: z.string(),
-		/** Lower sorts first within the same featured group */
-		order: z.coerce.number().default(0),
-		/** Shown in the top “spotlight” block (first three after sort) */
-		featured: z.coerce.boolean().default(false),
-		url: optionalHref,
-		repo: optionalUrl,
-	}),
+	schema: ({ image }) =>
+		z.object({
+			title: z.string(),
+			description: z.string(),
+			/** Lower sorts first within the same featured group */
+			order: z.coerce.number().default(0),
+			/** Shown in the top “spotlight” block (first three after sort) */
+			featured: z.coerce.boolean().default(false),
+			url: optionalHref,
+			repo: optionalUrl,
+			image: z.optional(image()),
+		}),
 });
 
 export const collections = { blog, projects };
