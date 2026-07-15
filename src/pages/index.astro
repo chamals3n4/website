@@ -6,130 +6,142 @@ import ProfileImage from "../assets/me.jpeg";
 import { SITE_DESCRIPTION, SITE_TITLE } from "../consts";
 
 const personSchema = {
-  "@context": "https://schema.org",
-  "@type": "Person",
-  name: "Chamal Senarathna",
-  alternateName: "chamalsena",
-  url: Astro.site?.toString(),
-  jobTitle: "Full Stack Developer",
-  description:
-    "Chamal Senarathna is a full stack developer, SLIIT software engineering student, and open source contributor from Sri Lanka.",
-  alumniOf: {
-    "@type": "CollegeOrUniversity",
-    name: "Sri Lanka Institute of Information Technology (SLIIT)",
-  },
-  sameAs: [
-    "https://x.com/chamalsena",
-    "https://github.com/chamals3n4",
-    "https://instagram.com/chamalsena",
-    "https://linkedin.com/in/chamalsena",
-  ],
+    "@context": "https://schema.org",
+    "@type": "Person",
+    name: "Chamal Senarathna",
+    alternateName: "chamalsena",
+    url: Astro.site?.toString(),
+    jobTitle: "Full Stack Developer",
+    description:
+        "Chamal Senarathna is a full stack developer, SLIIT software engineering student, and open source contributor from Sri Lanka.",
+    alumniOf: {
+        "@type": "CollegeOrUniversity",
+        name: "Sri Lanka Institute of Information Technology (SLIIT)",
+    },
+    sameAs: [
+        "https://x.com/chamalsena",
+        "https://github.com/chamals3n4",
+        "https://instagram.com/chamalsena",
+        "https://linkedin.com/in/chamalsena",
+    ],
 };
 ---
 
 <!doctype html>
 <html lang="en">
-  <head>
-    <BaseHead
-      title={`${SITE_TITLE} - Full Stack Developer & SLIIT Software Engineer`}
-      description="Chamal Senarathna's personal site - full stack developer, SLIIT software engineering student, and open source contributor from Sri Lanka. Projects, blog posts, and tools."
-      keywords="Chamal Senarathna, chamalsena, chamal senarathna software engineer, chamal senarathna sri lanka, chamal senarathna developer, chamal senarathna github, chamal senarathna portfolio, full stack developer Sri Lanka, SLIIT software engineering, SLIIT SE, open source contributor Sri Lanka, open source developer Sri Lanka"
-    />
-    <script type="application/ld+json" set:html={JSON.stringify(personSchema)} />
-  </head>
-  <body>
-    <Header transition:persist transition:name="site-header" />
-    <main>
-      <section class="about-layout">
-        <div class="about-copy">
-          <h1 class="page-title">{SITE_TITLE}</h1>
-          <p class="about-meta">Software Engineering Student · Sri Lanka</p>
-          <p>
-            I build things on the web. Some work, some break, all of them teach
-            me something.
-          </p>
-          <p>
-            I’m currently studying software engineering and working on different
-            kinds of applications, improving step by step. I also write down
-            thoughts here, things I notice, things I feel like sharing, and
-            things I’m still figuring out.
-          </p>
-          <p>
-            This space is a collection of my work, thoughts, and progress over
-            time :)
-          </p>
-          <div class="social-links" aria-label="Social links">
-            <a
-              href="mailto:chamals004@gmail.com"
-              aria-label="Email Chamal Senarathna"
-              title="Email"
-            >
-              <svg aria-hidden="true" viewBox="3 5 18 14">
-                <path
-                  d="M3 5h18v14H3V5Zm2.4 2 6.6 5.1L18.6 7H5.4Zm13.6 10V8.9l-7 5.4-7-5.4V17h14Z"
-                />
-              </svg>
-            </a>
-            <a
-              href="https://x.com/chamalsena"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Chamal Senarathna on X"
-              title="X"
-            >
-              <svg aria-hidden="true" viewBox="0 0 24 24">
-                <path
-                  d="M14.2 10.2 22.7 0h-2l-7.4 8.8L7.4 0H.6l8.9 13.1L.6 24h2l7.8-9.4 6.2 9.4h6.8l-9.2-13.8Zm-2.8 3.3-.9-1.3L3.3 1.5h3.2l5.8 8.6.9 1.3 7.6 11.2h-3.2l-6.2-9.1Z"
-                />
-              </svg>
-            </a>
-            <a
-              href="https://github.com/chamals3n4"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Chamal Senarathna on GitHub"
-              title="GitHub"
-            >
-              <svg aria-hidden="true" viewBox="0 0 24 24">
-                <path
-                  d="M12 .5A12 12 0 0 0 8.2 23.9c.6.1.8-.3.8-.6v-2.1c-3.3.7-4-1.4-4-1.4-.5-1.3-1.3-1.7-1.3-1.7-1.1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1.1 1.8 2.8 1.3 3.5 1 .1-.8.4-1.3.8-1.6-2.6-.3-5.4-1.3-5.4-5.9 0-1.3.5-2.4 1.2-3.2-.1-.3-.5-1.6.1-3.2 0 0 1-.3 3.3 1.2a11.4 11.4 0 0 1 6 0C17.9 4.8 19 5.1 19 5.1c.6 1.6.2 2.9.1 3.2.8.8 1.2 1.9 1.2 3.2 0 4.6-2.8 5.6-5.4 5.9.4.4.8 1.1.8 2.2v3.7c0 .3.2.7.8.6A12 12 0 0 0 12 .5Z"
-                />
-              </svg>
-            </a>
-            <a
-              href="https://instagram.com/chamalsena"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Chamal Senarathna on Instagram"
-              title="Instagram"
-            >
-              <svg aria-hidden="true" viewBox="0 0 24 24">
-                <path
-                  d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5Zm0 2a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3H7Zm5 3.8a4.2 4.2 0 1 1 0 8.4 4.2 4.2 0 0 1 0-8.4Zm0 2a2.2 2.2 0 1 0 0 4.4 2.2 2.2 0 0 0 0-4.4Zm4.7-3.1a1.1 1.1 0 1 1 0 2.2 1.1 1.1 0 0 1 0-2.2Z"
-                />
-              </svg>
-            </a>
-            <a
-              href="https://linkedin.com/in/chamalsena"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Chamal Senarathna on LinkedIn"
-              title="LinkedIn"
-            >
-              <svg aria-hidden="true" viewBox="0 0 24 24">
-                <path
-                  d="M4.98 3.5A2.5 2.5 0 1 1 0 3.5a2.5 2.5 0 0 1 4.98 0ZM.4 8h4.2v13.5H.4V8Zm7 0h4v1.8h.1c.6-1.1 2-2.2 4.1-2.2 4.4 0 5.2 2.9 5.2 6.7v7.2h-4.2v-6.4c0-1.5 0-3.5-2.1-3.5s-2.5 1.7-2.5 3.4v6.5H7.4V8Z"
-                />
-              </svg>
-            </a>
-          </div>
-        </div>
-        <figure class="profile-card">
-          <img src={ProfileImage.src} alt="" />
-          <figcaption>Chamal Senarathna</figcaption>
-        </figure>
-      </section>
-    </main>
-    <Footer transition:persist transition:name="site-footer" />
-  </body>
+    <head>
+        <BaseHead
+            title={`${SITE_TITLE} - Full Stack Developer & SLIIT Software Engineer`}
+            description="Chamal Senarathna's personal site - full stack developer, SLIIT software engineering student, and open source contributor from Sri Lanka. Projects, blog posts, and tools."
+            keywords="Chamal Senarathna, chamalsena, chamal senarathna software engineer, chamal senarathna sri lanka, chamal senarathna developer, chamal senarathna github, chamal senarathna portfolio, full stack developer Sri Lanka, SLIIT software engineering, SLIIT SE, open source contributor Sri Lanka, open source developer Sri Lanka"
+        />
+        <script
+            type="application/ld+json"
+            set:html={JSON.stringify(personSchema)}
+        />
+    </head>
+    <body>
+        <Header transition:persist transition:name="site-header" />
+        <main>
+            <section class="about-layout">
+                <div class="about-copy">
+                    <h1 class="page-title">{SITE_TITLE}</h1>
+                    <p class="about-meta">
+                        Software Engineering Student · Free and Open Source
+                    </p>
+                    <p>
+                        I'm a software engineering undergraduate with a strong
+                        interest in full-stack development and building
+                        applications that solve real problems. My focus is on
+                        writing clean, functional code and continuously
+                        growing as an engineer through hands-on work.
+                    </p>
+                    <p>
+                        I believe technology, when built thoughtfully, has the
+                        power to make a real difference, and that's the kind
+                        of work I want to keep doing.
+                    </p>
+                    <p>
+                        This space is where I document that journey: the
+                        projects I build, the ideas behind them, and the
+                        reflections that come from constantly learning and
+                        improving.
+                    </p>
+                    <div class="social-links" aria-label="Social links">
+                        <a
+                            href="mailto:chamals004@gmail.com"
+                            aria-label="Email Chamal Senarathna"
+                            title="Email"
+                        >
+                            <svg aria-hidden="true" viewBox="3 5 18 14">
+                                <path
+                                    d="M3 5h18v14H3V5Zm2.4 2 6.6 5.1L18.6 7H5.4Zm13.6 10V8.9l-7 5.4-7-5.4V17h14Z"
+                                ></path>
+                            </svg>
+                        </a>
+                        <a
+                            href="https://x.com/chamalsena"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            aria-label="Chamal Senarathna on X"
+                            title="X"
+                        >
+                            <svg aria-hidden="true" viewBox="0 0 24 24">
+                                <path
+                                    d="M14.2 10.2 22.7 0h-2l-7.4 8.8L7.4 0H.6l8.9 13.1L.6 24h2l7.8-9.4 6.2 9.4h6.8l-9.2-13.8Zm-2.8 3.3-.9-1.3L3.3 1.5h3.2l5.8 8.6.9 1.3 7.6 11.2h-3.2l-6.2-9.1Z"
+                                ></path>
+                            </svg>
+                        </a>
+                        <a
+                            href="https://github.com/chamals3n4"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            aria-label="Chamal Senarathna on GitHub"
+                            title="GitHub"
+                        >
+                            <svg aria-hidden="true" viewBox="0 0 24 24">
+                                <path
+                                    d="M12 .5A12 12 0 0 0 8.2 23.9c.6.1.8-.3.8-.6v-2.1c-3.3.7-4-1.4-4-1.4-.5-1.3-1.3-1.7-1.3-1.7-1.1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1.1 1.8 2.8 1.3 3.5 1 .1-.8.4-1.3.8-1.6-2.6-.3-5.4-1.3-5.4-5.9 0-1.3.5-2.4 1.2-3.2-.1-.3-.5-1.6.1-3.2 0 0 1-.3 3.3 1.2a11.4 11.4 0 0 1 6 0C17.9 4.8 19 5.1 19 5.1c.6 1.6.2 2.9.1 3.2.8.8 1.2 1.9 1.2 3.2 0 4.6-2.8 5.6-5.4 5.9.4.4.8 1.1.8 2.2v3.7c0 .3.2.7.8.6A12 12 0 0 0 12 .5Z"
+                                ></path>
+                            </svg>
+                        </a>
+                        <a
+                            href="https://instagram.com/chamalsena"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            aria-label="Chamal Senarathna on Instagram"
+                            title="Instagram"
+                        >
+                            <svg aria-hidden="true" viewBox="0 0 24 24">
+                                <path
+                                    d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5Zm0 2a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3H7Zm5 3.8a4.2 4.2 0 1 1 0 8.4 4.2 4.2 0 0 1 0-8.4Zm0 2a2.2 2.2 0 1 0 0 4.4 2.2 2.2 0 0 0 0-4.4Zm4.7-3.1a1.1 1.1 0 1 1 0 2.2 1.1 1.1 0 0 1 0-2.2Z"
+                                ></path>
+                            </svg>
+                        </a>
+                        <a
+                            href="https://linkedin.com/in/chamalsena"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            aria-label="Chamal Senarathna on LinkedIn"
+                            title="LinkedIn"
+                        >
+                            <svg aria-hidden="true" viewBox="0 0 24 24">
+                                <path
+                                    d="M4.98 3.5A2.5 2.5 0 1 1 0 3.5a2.5 2.5 0 0 1 4.98 0ZM.4 8h4.2v13.5H.4V8Zm7 0h4v1.8h.1c.6-1.1 2-2.2 4.1-2.2 4.4 0 5.2 2.9 5.2 6.7v7.2h-4.2v-6.4c0-1.5 0-3.5-2.1-3.5s-2.5 1.7-2.5 3.4v6.5H7.4V8Z"
+                                ></path>
+                            </svg>
+                        </a>
+                        <a class="cv-button" href="/cv.pdf" target="_blank" rel="noopener noreferrer">
+                            View CV
+                        </a>
+                    </div>
+                </div>
+                <figure class="profile-card">
+                    <img src={ProfileImage.src} alt="" />
+                    <figcaption>GET /me.jpg 200 OK</figcaption>
+                </figure>
+            </section>
+        </main>
+        <Footer transition:persist transition:name="site-footer" />
+    </body>
 </html>
