@@ -79,4 +79,13 @@ const {
 <meta property="twitter:description" content={description} />
 <meta property="twitter:image" content={new URL(image.src, Astro.url)} />
 
+<script src="https://unpkg.com/lucide@latest"></script>
+<script is:inline>
+  window.addEventListener("DOMContentLoaded", () => {
+    if (window.lucide) {
+      window.lucide.createIcons();
+    }
+  });
+</script>
+
 <ClientRouter />

@@ -1,12 +1,12 @@
 ---
-import { getCollection } from 'astro:content';
-import BaseHead from '../../components/BaseHead.astro';
-import Footer from '../../components/Footer.astro';
-import FormattedDate from '../../components/FormattedDate.astro';
-import Header from '../../components/Header.astro';
-import { SITE_DESCRIPTION, SITE_TITLE } from '../../consts';
+import { getCollection } from "astro:content";
+import BaseHead from "../../components/BaseHead.astro";
+import Footer from "../../components/Footer.astro";
+import FormattedDate from "../../components/FormattedDate.astro";
+import Header from "../../components/Header.astro";
+import { SITE_DESCRIPTION, SITE_TITLE } from "../../consts";
 
-const posts = (await getCollection('blog')).sort(
+const posts = (await getCollection("blog")).sort(
 	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
 );
 ---
@@ -124,7 +124,17 @@ const posts = (await getCollection('blog')).sort(
 		<Header transition:persist transition:name="site-header" />
 		<main>
 			<div class="search-field">
-				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
+				<svg
+					xmlns="http://www.w3.org/2000/svg"
+					viewBox="0 0 24 24"
+					fill="none"
+					stroke="currentColor"
+					stroke-width="2"
+					stroke-linecap="round"
+					stroke-linejoin="round"
+					><circle cx="11" cy="11" r="8"></circle><path
+						d="m21 21-4.3-4.3"></path></svg
+				>
 				<input
 					class="blog-search"
 					type="search"
@@ -135,44 +145,64 @@ const posts = (await getCollection('blog')).sort(
 			</div>
 			<ul class="post-list">
 				{
-					posts.map((post) => (
-						<li
-							class="post-row"
-							data-search-text={`${post.data.title} ${post.data.description} ${post.data.pubDate.toDateString()}`.toLowerCase()}
-						>
-							<a class="post-title-link" href={`/blog/${post.id}/`}>
-								<span class="post-title">{post.data.title}</span>
-								<p class="post-description">{post.data.description}</p>
-								<div class="post-date">
-									<FormattedDate date={post.data.pubDate} />
-								</div>
-							</a>
-						</li>
-					))
+					posts.map((post) => {
+						const href =
+							post.data.externalUrl ?? `/blog/${post.id}/`;
+						const target = post.data.externalUrl
+							? "_blank"
+							: undefined;
+						const rel = post.data.externalUrl
+							? "noopener noreferrer"
+							: undefined;
+
+						return (
+							<li
+								class="post-row"
+								data-search-text={`${post.data.title} ${post.data.description} ${post.data.pubDate.toDateString()}`.toLowerCase()}
+							>
+								<a
+									class="post-title-link"
+									href={href}
+									target={target}
+									rel={rel}
+								>
+									<span class="post-title">{post.data.title}</span>
+									<p class="post-description">{post.data.description}</p>
+									<div class="post-date">
+										<FormattedDate date={post.data.pubDate} />
+									</div>
+								</a>
+							</li>
+						);
+					})
 				}
 			</ul>
 			<p class="no-results" data-blog-empty>No posts found.</p>
 		</main>
 		<Footer transition:persist transition:name="site-footer" />
 		<script>
-			const blogSearch = document.querySelector('[data-blog-search]');
-			const postRows = Array.from(document.querySelectorAll('.post-row'));
-			const emptyState = document.querySelector('[data-blog-empty]');
+			const blogSearch = document.querySelector("[data-blog-search]");
+			const postRows = Array.from(document.querySelectorAll(".post-row"));
+			const emptyState = document.querySelector("[data-blog-empty]");
 
 			if (blogSearch instanceof HTMLInputElement) {
-				blogSearch.addEventListener('input', () => {
+				blogSearch.addEventListener("input", () => {
 					const query = blogSearch.value.trim().toLowerCase();
 					let visibleCount = 0;
 
 					postRows.forEach((row) => {
 						if (!(row instanceof HTMLElement)) return;
 
-						const matches = row.dataset.searchText?.includes(query) ?? false;
+						const matches =
+							row.dataset.searchText?.includes(query) ?? false;
 						row.hidden = !matches;
 						if (matches) visibleCount += 1;
 					});
 
-					emptyState?.classList.toggle('is-visible', visibleCount === 0);
+					emptyState?.classList.toggle(
+						"is-visible",
+						visibleCount === 0,
+					);
 				});
 			}
 		</script>

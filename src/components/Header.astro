@@ -13,13 +13,14 @@ import HeaderLink from "./HeaderLink.astro";
       <HeaderLink href="/projects">Projects</HeaderLink>
       <HeaderLink href="/tools">Tools</HeaderLink>
     </nav>
-    <button class="site-search" type="button" aria-label="Open search" data-search-open>
-      <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
-      <span class="site-search-placeholder">Search...</span>
-      <kbd>⌘K</kbd>
-    </button>
     <button class="theme-button" type="button" aria-label="Toggle theme" data-theme-toggle>
-      ◔
+      <svg class="theme-icon theme-icon-dark" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79Z"></path>
+      </svg>
+      <svg class="theme-icon theme-icon-light" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="5"></circle>
+        <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"></path>
+      </svg>
     </button>
     <button class="menu-toggle" type="button" aria-label="Toggle menu" aria-expanded="false" data-menu-toggle>
       <svg class="icon-menu" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16"></path><path d="M4 12h16"></path><path d="M4 18h16"></path></svg>
@@ -68,129 +69,146 @@ import HeaderLink from "./HeaderLink.astro";
     });
   };
 
-  document.addEventListener("astro:page-load", updateActiveNavLink);
+  const initHeaderInteractions = () => {
+    const themeToggle = document.querySelector("[data-theme-toggle]");
+    const searchOpen = document.querySelector("[data-search-open]");
+    const searchOverlay = document.querySelector("[data-search-overlay]");
+    const searchInput = document.querySelector("[data-search-input]");
+    const searchResults = Array.from(document.querySelectorAll(".search-result"));
+    const scrollTopButton = document.querySelector("[data-scroll-top]");
+    const menuToggle = document.querySelector("[data-menu-toggle]");
+    const siteNav = document.querySelector("[data-site-nav]");
 
-  const themeToggle = document.querySelector("[data-theme-toggle]");
-  const searchOpen = document.querySelector("[data-search-open]");
-  const searchOverlay = document.querySelector("[data-search-overlay]");
-  const searchInput = document.querySelector("[data-search-input]");
-  const searchResults = Array.from(document.querySelectorAll(".search-result"));
-  const scrollTopButton = document.querySelector("[data-scroll-top]");
-  const menuToggle = document.querySelector("[data-menu-toggle]");
-  const siteNav = document.querySelector("[data-site-nav]");
+    const updateThemeButton = () => {
+      const isDark = document.documentElement.dataset.theme === "dark";
+      themeToggle?.setAttribute(
+        "aria-label",
+        isDark ? "Switch to light mode" : "Switch to dark mode",
+      );
+    };
 
-  const closeMenu = () => {
-    siteNav?.classList.remove("is-open");
-    menuToggle?.setAttribute("aria-expanded", "false");
-  };
+    const closeMenu = () => {
+      siteNav?.classList.remove("is-open");
+      menuToggle?.setAttribute("aria-expanded", "false");
+    };
 
-  menuToggle?.addEventListener("click", () => {
-    const isOpen = siteNav?.classList.toggle("is-open");
-    menuToggle.setAttribute("aria-expanded", String(Boolean(isOpen)));
-  });
-
-  siteNav?.addEventListener("click", (event) => {
-    if (event.target instanceof HTMLAnchorElement) closeMenu();
-  });
-
-  document.addEventListener("astro:page-load", closeMenu);
-
-  themeToggle?.addEventListener("click", () => {
-    const nextTheme =
-      document.documentElement.dataset.theme === "dark" ? "light" : "dark";
-
-    document.documentElement.dataset.theme = nextTheme;
-    localStorage.setItem("theme", nextTheme);
-  });
-
-  let activeResultIndex = 0;
-
-  const updateActiveResult = () => {
-    searchResults.forEach((result, index) => {
-      result.classList.toggle("is-active", index === activeResultIndex);
+    menuToggle?.addEventListener("click", () => {
+      const isOpen = siteNav?.classList.toggle("is-open");
+      menuToggle.setAttribute("aria-expanded", String(Boolean(isOpen)));
     });
+
+    siteNav?.addEventListener("click", (event) => {
+      if (event.target instanceof HTMLAnchorElement) closeMenu();
+    });
+
+    themeToggle?.addEventListener("click", () => {
+      const nextTheme =
+        document.documentElement.dataset.theme === "dark" ? "light" : "dark";
+
+      document.documentElement.dataset.theme = nextTheme;
+      localStorage.setItem("theme", nextTheme);
+      updateThemeButton();
+    });
+
+    let activeResultIndex = 0;
+
+    const updateActiveResult = () => {
+      searchResults.forEach((result, index) => {
+        result.classList.toggle("is-active", index === activeResultIndex);
+      });
+    };
+
+    const openSearch = () => {
+      searchOverlay?.classList.add("is-open");
+      searchOverlay?.setAttribute("aria-hidden", "false");
+      document.body.classList.add("search-open");
+      activeResultIndex = 0;
+      updateActiveResult();
+      window.setTimeout(() => searchInput?.focus(), 80);
+    };
+
+    const closeSearch = () => {
+      searchOverlay?.classList.remove("is-open");
+      searchOverlay?.setAttribute("aria-hidden", "true");
+      document.body.classList.remove("search-open");
+      searchInput.value = "";
+    };
+
+    searchOpen?.addEventListener("click", openSearch);
+
+    searchOverlay?.addEventListener("click", (event) => {
+      if (event.target === searchOverlay) closeSearch();
+    });
+
+    document.addEventListener("click", (event) => {
+      if (!siteNav?.classList.contains("is-open")) return;
+      if (event.target instanceof Node && (siteNav.contains(event.target) || menuToggle?.contains(event.target))) return;
+      closeMenu();
+    });
+
+    document.addEventListener("keydown", (event) => {
+      const isSearchShortcut = (event.metaKey || event.ctrlKey) && event.key.toLowerCase() === "k";
+
+      if (isSearchShortcut) {
+        event.preventDefault();
+        openSearch();
+        return;
+      }
+
+      if (event.key === "Escape") closeMenu();
+
+      if (!searchOverlay?.classList.contains("is-open")) return;
+
+      if (event.key === "Escape") {
+        closeSearch();
+        return;
+      }
+
+      if (event.key === "ArrowDown") {
+        event.preventDefault();
+        activeResultIndex = (activeResultIndex + 1) % searchResults.length;
+        updateActiveResult();
+        return;
+      }
+
+      if (event.key === "ArrowUp") {
+        event.preventDefault();
+        activeResultIndex =
+          (activeResultIndex - 1 + searchResults.length) % searchResults.length;
+        updateActiveResult();
+        return;
+      }
+
+      if (event.key === "Enter") {
+        event.preventDefault();
+        searchResults[activeResultIndex]?.click();
+      }
+    });
+
+    const updateScrollTopButton = () => {
+      const scrollPosition = window.scrollY + window.innerHeight;
+      const nearBottom = document.documentElement.scrollHeight - scrollPosition < 220;
+      scrollTopButton?.classList.toggle("is-visible", nearBottom && window.scrollY > 240);
+    };
+
+    scrollTopButton?.addEventListener("click", () => {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+
+    updateThemeButton();
+    updateScrollTopButton();
+    document.addEventListener("scroll", updateScrollTopButton, { passive: true });
+    window.addEventListener("resize", updateScrollTopButton);
   };
 
-  const openSearch = () => {
-    searchOverlay?.classList.add("is-open");
-    searchOverlay?.setAttribute("aria-hidden", "false");
-    document.body.classList.add("search-open");
-    activeResultIndex = 0;
-    updateActiveResult();
-    window.setTimeout(() => searchInput?.focus(), 80);
-  };
-
-  const closeSearch = () => {
-    searchOverlay?.classList.remove("is-open");
-    searchOverlay?.setAttribute("aria-hidden", "true");
-    document.body.classList.remove("search-open");
-    searchInput.value = "";
-  };
-
-  searchOpen?.addEventListener("click", openSearch);
-
-  searchOverlay?.addEventListener("click", (event) => {
-    if (event.target === searchOverlay) closeSearch();
-  });
-
-  document.addEventListener("click", (event) => {
-    if (!siteNav?.classList.contains("is-open")) return;
-    if (event.target instanceof Node && (siteNav.contains(event.target) || menuToggle?.contains(event.target))) return;
+  document.addEventListener("astro:page-load", () => {
+    updateActiveNavLink();
+    initHeaderInteractions();
     closeMenu();
   });
 
-  document.addEventListener("keydown", (event) => {
-    const isSearchShortcut = (event.metaKey || event.ctrlKey) && event.key.toLowerCase() === "k";
-
-    if (isSearchShortcut) {
-      event.preventDefault();
-      openSearch();
-      return;
-    }
-
-    if (event.key === "Escape") closeMenu();
-
-    if (!searchOverlay?.classList.contains("is-open")) return;
-
-    if (event.key === "Escape") {
-      closeSearch();
-      return;
-    }
-
-    if (event.key === "ArrowDown") {
-      event.preventDefault();
-      activeResultIndex = (activeResultIndex + 1) % searchResults.length;
-      updateActiveResult();
-      return;
-    }
-
-    if (event.key === "ArrowUp") {
-      event.preventDefault();
-      activeResultIndex =
-        (activeResultIndex - 1 + searchResults.length) % searchResults.length;
-      updateActiveResult();
-      return;
-    }
-
-    if (event.key === "Enter") {
-      event.preventDefault();
-      searchResults[activeResultIndex]?.click();
-    }
-  });
-
-  const updateScrollTopButton = () => {
-    const scrollPosition = window.scrollY + window.innerHeight;
-    const nearBottom = document.documentElement.scrollHeight - scrollPosition < 220;
-    scrollTopButton?.classList.toggle("is-visible", nearBottom && window.scrollY > 240);
-  };
-
-  scrollTopButton?.addEventListener("click", () => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  });
-
-  updateScrollTopButton();
-  document.addEventListener("scroll", updateScrollTopButton, { passive: true });
-  window.addEventListener("resize", updateScrollTopButton);
+  initHeaderInteractions();
+  updateActiveNavLink();
 </script>
 <style is:global>
   .site-header {
@@ -223,14 +241,15 @@ import HeaderLink from "./HeaderLink.astro";
   .site-nav {
     display: flex;
     align-items: center;
-    gap: 1.35rem;
-    font-size: 13px;
+    gap: 1.7rem;
+    font-size: 15px;
     white-space: nowrap;
   }
   .site-nav a {
     color: var(--text);
     text-decoration: none;
     cursor: pointer;
+    padding: 0.25rem 0.1rem;
   }
   .site-nav a.active {
     color: var(--accent);
@@ -244,6 +263,16 @@ import HeaderLink from "./HeaderLink.astro";
     color: var(--text);
     cursor: pointer;
     appearance: none;
+  }
+  .theme-button .theme-icon {
+    width: 18px;
+    height: 18px;
+    display: none;
+    color: var(--text);
+  }
+  html[data-theme="dark"] .theme-icon-dark,
+  html[data-theme="light"] .theme-icon-light {
+    display: block;
   }
   .site-search {
     flex: 0 0 190px;
@@ -467,17 +496,6 @@ import HeaderLink from "./HeaderLink.astro";
     .site-nav {
       gap: 0.9rem;
       overflow-x: auto;
-    }
-    .site-search {
-      flex: 0 0 auto;
-      width: 40px;
-      height: 40px;
-      padding: 0;
-      justify-content: center;
-    }
-    .site-search-placeholder,
-    .site-search kbd {
-      display: none;
     }
     .scroll-top {
       right: 14px;
