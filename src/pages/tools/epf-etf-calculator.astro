@@ -1,5 +1,7 @@
 ---
 import BaseHead from '../../components/BaseHead.astro';
+import Footer from '../../components/Footer.astro';
+import Header from '../../components/Header.astro';
 
 const softwareAppSchema = {
 	'@context': 'https://schema.org',
@@ -53,6 +55,7 @@ const faqSchema = {
 };
 ---
 
+<!doctype html>
 <html lang="en">
 	<head>
 		<BaseHead
@@ -63,308 +66,304 @@ const faqSchema = {
 		<script type="application/ld+json" set:html={JSON.stringify(softwareAppSchema)} />
 		<script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
 		<style>
-			:root {
-				--calc-accent: #7a1128;
-				--calc-accent-dark: #5c0c1e;
-				--surface-alt: #faf5f6;
-				--input-bg: #f5eef0;
-				--input-border: #e2c9cf;
-				--green: #15803d;
-				--green-bg: #dcfce7;
-				--green-border: #86efac;
-			}
-			:root[data-theme='dark'] {
-				--surface-alt: #201619;
-				--input-bg: #2a1e21;
-				--input-border: #4a2c33;
-				--green: #4ade80;
-				--green-bg: #14291c;
-				--green-border: #1f5c34;
-			}
-			body {
-				display: block;
-				padding: 0;
-				background: var(--surface-alt);
-				color: var(--text);
-			}
-			main {
-				max-width: 620px;
-				margin: 0 auto;
-				padding: 2.5rem 1.25rem 5rem;
-			}
-			a.back {
+			.back-link {
 				display: inline-flex;
 				align-items: center;
-				gap: 0.35rem;
-				margin-bottom: 1.75rem;
-				font-size: 13px;
-				color: var(--muted);
-			}
-			a.back:hover {
-				color: var(--accent);
-			}
-			a.back svg {
-				width: 15px;
-				height: 15px;
-			}
-			header.page-header {
-				margin-bottom: 1.75rem;
-			}
-			h1 {
-				font-size: 26px;
-				letter-spacing: -0.01em;
-				margin-bottom: 0.35rem;
-			}
-			.subtitle {
-				color: var(--muted);
-				font-size: 14px;
-				max-width: 60ch;
-			}
-
-			.card {
-				background: var(--surface);
-				border: 1px solid var(--border);
+				gap: 8px;
+				margin: 0 0 28px;
+				padding: 6px 12px;
+				border: 1px solid var(--border-strong);
 				border-radius: 4px;
-				box-shadow: 0 1px 2px rgba(16, 24, 40, 0.04);
-				padding: 1.75rem;
-				margin-bottom: 1.25rem;
+				color: var(--text);
+				font-family: var(--font-mono);
+				font-size: 13px;
+				letter-spacing: 0.02em;
+				text-transform: uppercase;
+				transition: border-color 150ms ease;
+			}
+			.back-link:hover {
+				border-color: var(--text);
+				color: var(--text);
+			}
+			.back-link svg {
+				width: 14px;
+				height: 14px;
+			}
+			.calc-title {
+				margin: 20px 0 0;
+				font-size: clamp(32px, 5vw, 44px);
+				font-weight: 500;
+				line-height: 1.1;
+				letter-spacing: -0.03em;
 			}
 
-			.field {
-				margin-bottom: 1.25rem;
+			.calc-layout {
+				display: grid;
+				grid-template-columns: minmax(0, 420px) minmax(0, 1fr);
+				gap: 24px;
+				align-items: start;
 			}
-			.field:last-child {
-				margin-bottom: 0;
+			.calc-form {
+				position: sticky;
+				top: 86px;
 			}
-			label {
+
+			.field + .field {
+				margin-top: 24px;
+			}
+			.field-label,
+			.rates-header h2 {
 				display: block;
+				margin: 0 0 10px;
+				color: var(--text);
+				font-family: var(--font-mono);
 				font-size: 13px;
-				font-weight: 600;
-				margin-bottom: 0.4rem;
-				color: var(--text);
+				font-weight: 500;
+				letter-spacing: 0.02em;
+				text-transform: uppercase;
 			}
-			.salary-input {
-				position: relative;
-			}
-			.salary-input span {
-				position: absolute;
-				left: 0.9rem;
-				top: 50%;
-				transform: translateY(-50%);
-				color: var(--muted);
-				font-size: 15px;
-				font-weight: 600;
-				pointer-events: none;
-			}
-			.salary-input input {
-				padding-left: 3.1rem;
-				font-size: 18px;
-				font-weight: 700;
-			}
-			input {
-				width: 100%;
-				padding: 0.65rem 0.8rem;
-				border: 1px solid var(--input-border);
-				border-radius: 4px;
-				background: var(--input-bg);
-				color: var(--text);
-				transition: border-color 0.15s ease;
-			}
-			input:focus {
-				outline: none;
-				border-color: var(--accent);
-			}
-
 			.rates-header {
 				display: flex;
 				flex-wrap: wrap;
 				align-items: baseline;
 				justify-content: space-between;
-				gap: 0.35rem;
-				margin-bottom: 1rem;
+				gap: 4px 12px;
+				margin-bottom: 12px;
 			}
 			.rates-header h2 {
-				font-size: 13px;
-				font-weight: 700;
-				text-transform: uppercase;
-				letter-spacing: 0.04em;
+				margin: 0;
+			}
+			.hint {
 				color: var(--muted);
-			}
-			.rates-header .hint {
-				font-size: 11px;
-				color: var(--muted);
-			}
-			.rate-grid {
-				display: grid;
-				grid-template-columns: repeat(3, 1fr);
-				gap: 0.85rem;
-			}
-			.rate-grid label {
 				font-size: 12px;
-				color: var(--muted);
-				font-weight: 600;
 			}
-			.rate-input {
+			.input-wrap {
 				position: relative;
 			}
-			.rate-input input {
-				padding-right: 1.8rem;
-				text-align: right;
-				font-weight: 600;
-			}
-			.rate-input span {
+			.input-wrap span {
 				position: absolute;
-				right: 0.7rem;
 				top: 50%;
 				transform: translateY(-50%);
 				color: var(--muted);
+				font-family: var(--font-mono);
 				font-size: 13px;
+				pointer-events: none;
 			}
-
-			button.calculate {
+			.salary-input span {
+				left: 14px;
+			}
+			.rate-input span {
+				right: 12px;
+			}
+			.calc-form input {
 				width: 100%;
-				padding: 0.85rem;
-				font-size: 15px;
-				font-weight: 700;
-				border: none;
+				height: 48px;
+				padding: 0 14px;
+				border: 1px solid var(--border-strong);
 				border-radius: 4px;
-				background: linear-gradient(180deg, var(--calc-accent), var(--calc-accent-dark));
-				color: #fff;
+				background: var(--surface);
+				color: var(--text);
+				font-family: var(--font-mono);
+				font-size: 15px;
+				transition: border-color 150ms ease;
+			}
+			.calc-form input:focus {
+				outline: none;
+				border-color: var(--text);
+			}
+			.salary-input input {
+				padding-left: 52px;
+				font-size: 18px;
+				font-weight: 500;
+			}
+			.rate-input input {
+				padding-right: 30px;
+				text-align: right;
+			}
+			.rate-grid {
+				display: grid;
+				grid-template-columns: repeat(3, minmax(0, 1fr));
+				gap: 10px;
+			}
+			.rate-grid label {
+				display: block;
+				margin: 0 0 6px;
+				color: var(--muted);
+				font-size: 12px;
+			}
+			.calc-submit {
+				width: 100%;
+				margin-top: 28px;
 				cursor: pointer;
-				box-shadow: 0 1px 2px rgba(122, 17, 40, 0.25);
-				transition: transform 0.08s ease, box-shadow 0.15s ease;
-			}
-			button.calculate:hover {
-				box-shadow: 0 4px 10px rgba(122, 17, 40, 0.3);
-			}
-			button.calculate:active {
-				transform: translateY(1px);
 			}
 
+			.result-empty {
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				justify-content: center;
+				gap: 8px;
+				min-height: 320px;
+				padding: 32px;
+				border: 1px dashed var(--border-strong);
+				border-radius: var(--radius);
+				color: var(--muted);
+				text-align: center;
+			}
+			.result-empty strong {
+				color: var(--text);
+				font-family: var(--font-mono);
+				font-size: 13px;
+				font-weight: 500;
+				letter-spacing: 0.02em;
+				text-transform: uppercase;
+			}
+			.result-empty p {
+				max-width: 320px;
+				margin: 0;
+				font-size: 14px;
+			}
 			#result {
 				display: none;
-				margin-top: 1.5rem;
 			}
 			#result.visible {
-				display: block;
-				animation: fade-in 0.25s ease;
+				display: flex;
+				flex-direction: column;
+				gap: 16px;
+				animation: result-in 500ms cubic-bezier(0.22, 1, 0.36, 1);
 			}
-			@keyframes fade-in {
+			#result.visible + .result-empty,
+			.result-empty.is-hidden {
+				display: none;
+			}
+			@keyframes result-in {
 				from {
 					opacity: 0;
-					transform: translateY(4px);
+					transform: translateY(16px);
 				}
 				to {
 					opacity: 1;
-					transform: translateY(0);
+					transform: none;
 				}
 			}
 
-			.section-title {
-				font-size: 12px;
-				font-weight: 700;
+			.takehome {
+				padding: 28px;
+				border-radius: var(--radius);
+				background: var(--text);
+				color: var(--surface);
+			}
+			.takehome-label {
+				display: inline-flex;
+				align-items: center;
+				gap: 8px;
+				margin: 0 0 12px;
+				font-family: var(--font-mono);
+				font-size: 13px;
+				letter-spacing: 0.02em;
 				text-transform: uppercase;
-				letter-spacing: 0.04em;
-				color: var(--muted);
-				margin: 2rem 0 0.75rem;
+				opacity: 0.8;
 			}
-			.section-title:first-of-type {
-				margin-top: 0;
+			.takehome-label::before {
+				content: "";
+				width: 8px;
+				height: 8px;
+				border-radius: 50%;
+				background: var(--dot);
 			}
-
-			.hero-card {
-				background: var(--green-bg);
-				border: 1px solid var(--green-border);
-				border-radius: 4px;
-				padding: 1.5rem 1.75rem;
-				text-align: center;
+			.takehome-value {
+				margin: 0;
+				font-size: clamp(30px, 4vw, 40px);
+				font-weight: 500;
+				letter-spacing: -0.02em;
+				line-height: 1.1;
+				font-variant-numeric: tabular-nums;
 			}
-			.hero-card .hero-label {
-				font-size: 13px;
-				font-weight: 600;
-				color: var(--green);
-				margin-bottom: 0.35rem;
-			}
-			.hero-card .hero-value {
-				font-size: 32px;
-				font-weight: 800;
-				letter-spacing: -0.01em;
-				color: var(--text);
-			}
-			.hero-card .hero-sub {
-				font-size: 13px;
-				color: var(--muted);
-				margin-top: 0.5rem;
+			.takehome-sub {
+				margin: 10px 0 0;
+				font-size: 14px;
+				opacity: 0.7;
 			}
 
+			.result-title {
+				margin: 0 0 12px;
+				color: var(--muted);
+				font-family: var(--font-mono);
+				font-size: 13px;
+				font-weight: 500;
+				letter-spacing: 0.02em;
+				text-transform: uppercase;
+			}
+			.result-grid {
+				display: grid;
+				grid-template-columns: repeat(2, minmax(0, 1fr));
+				gap: 16px;
+			}
 			.line {
 				display: flex;
 				justify-content: space-between;
 				align-items: baseline;
+				gap: 12px;
+				padding: 9px 0;
 				font-size: 14px;
-				padding: 0.45rem 0;
 			}
 			.line + .line {
-				border-top: 1px solid var(--border);
-			}
-			.line.total {
-				margin-top: 0.2rem;
-				padding-top: 0.7rem;
-				font-weight: 700;
-				border-top: 1px solid var(--border);
+				border-top: 1px solid var(--border-strong);
 			}
 			.line .label {
 				color: var(--muted);
 			}
-			.line.total .label {
-				color: var(--text);
-			}
 			.line span:last-child {
+				color: var(--text);
+				font-family: var(--font-mono);
+				font-size: 13px;
 				font-variant-numeric: tabular-nums;
+				text-align: right;
+				white-space: nowrap;
+			}
+			.line.total .label,
+			.line.total span:last-child {
+				color: var(--text);
 				font-weight: 600;
 			}
 
 			.summary-grid {
 				display: grid;
-				grid-template-columns: 1fr 1fr;
-				gap: 0.85rem;
+				grid-template-columns: repeat(3, minmax(0, 1fr));
+				gap: 10px;
 			}
 			.stat {
-				background: var(--input-bg);
-				border: 1px solid var(--border);
-				border-radius: 4px;
-				padding: 0.9rem 1rem;
+				padding: 14px 16px;
+				border: 1px solid var(--border-strong);
+				border-radius: 8px;
+				background: var(--surface);
 			}
-			.stat .stat-label {
-				font-size: 11px;
+			.stat-label {
+				margin-bottom: 6px;
 				color: var(--muted);
-				font-weight: 600;
+				font-family: var(--font-mono);
+				font-size: 11.5px;
+				letter-spacing: 0.02em;
 				text-transform: uppercase;
-				letter-spacing: 0.03em;
-				margin-bottom: 0.3rem;
 			}
-			.stat .stat-value {
-				font-size: 17px;
-				font-weight: 700;
+			.stat-value {
+				color: var(--text);
+				font-family: var(--font-mono);
+				font-size: 15px;
+				font-weight: 500;
 				font-variant-numeric: tabular-nums;
 			}
-			.stat.wide {
-				grid-column: 1 / -1;
-			}
-			.stat.accent .stat-value {
-				color: var(--accent);
+			.stat.accent {
+				border-color: var(--text);
 			}
 
-			.growth-list {
-				display: flex;
-				flex-direction: column;
-			}
 			.growth-list :global(.growth-row) {
 				display: grid;
-				grid-template-columns: 1.2fr 1fr 1fr 1fr;
-				gap: 0.5rem;
-				padding: 0.6rem 0;
-				border-bottom: 1px solid var(--border);
+				grid-template-columns: 1fr 1fr 1fr 1fr;
+				gap: 8px;
+				padding: 10px 0;
+				border-bottom: 1px solid var(--border-strong);
+				font-family: var(--font-mono);
 				font-size: 13px;
 			}
 			.growth-list :global(.growth-row span) {
@@ -374,287 +373,241 @@ const faqSchema = {
 			.growth-list :global(.growth-row span:first-child) {
 				text-align: left;
 				color: var(--muted);
-				font-weight: 500;
+				text-transform: uppercase;
 			}
 			.growth-header {
-				font-size: 11px;
-				font-weight: 700;
+				color: var(--muted);
+				font-size: 11.5px !important;
+				letter-spacing: 0.02em;
 				text-transform: uppercase;
-				letter-spacing: 0.03em;
-				color: var(--muted);
-			}
-			.growth-header :global(span:first-child) {
-				color: var(--muted);
-				font-weight: 700;
 			}
 			#proj-body :global(.growth-row:last-child) {
 				border-bottom: none;
 			}
 			#proj-body :global(.growth-row:last-child span) {
-				font-weight: 700;
+				color: var(--text);
+				font-weight: 600;
 			}
-
 			.note {
-				font-size: 12px;
+				margin: 12px 0 0;
 				color: var(--muted);
-				margin-top: 0.85rem;
+				font-size: 12.5px;
 			}
 
-			.faq {
-				margin-top: 2.5rem;
-			}
-			.faq h2 {
-				font-size: 18px;
-				margin-bottom: 1rem;
-			}
-			.faq-item {
-				margin-bottom: 1.25rem;
-			}
-			.faq-item h3 {
-				font-size: 14px;
-				margin-bottom: 0.35rem;
-			}
-			.faq-item p {
-				font-size: 13px;
-				color: var(--muted);
-				line-height: 1.6;
-				margin: 0;
-			}
-
-			@media (max-width: 480px) {
-				.rate-grid {
-					grid-template-columns: 1fr;
+			@media (max-width: 900px) {
+				.calc-layout {
+					grid-template-columns: minmax(0, 1fr);
 				}
+				.calc-form {
+					position: static;
+				}
+				.result-empty {
+					display: none;
+				}
+			}
+			@media (max-width: 560px) {
+				.rate-grid,
+				.result-grid,
 				.summary-grid {
-					grid-template-columns: 1fr;
-				}
-				.card {
-					padding: 1.25rem;
-				}
-				.hero-card {
-					padding: 1.25rem 1rem;
-				}
-				.hero-card .hero-value {
-					font-size: 26px;
+					grid-template-columns: minmax(0, 1fr);
 				}
 				.growth-list :global(.growth-row) {
-					grid-template-columns: 0.9fr 1fr 1fr 1fr;
-					gap: 0.3rem;
-					font-size: 10.5px;
+					gap: 4px;
+					font-size: 11px;
 				}
-			}
-
-			.theme-toggle {
-				position: fixed;
-				right: 18px;
-				bottom: 18px;
-				z-index: 40;
-				width: 42px;
-				height: 42px;
-				display: inline-flex;
-				align-items: center;
-				justify-content: center;
-				border: 1px solid var(--border);
-				border-radius: 50%;
-				background: var(--surface);
-				color: var(--text);
-				box-shadow: 0 10px 28px rgba(0, 0, 0, 0.16);
-				cursor: pointer;
-			}
-			.theme-toggle svg {
-				width: 18px;
-				height: 18px;
-			}
-			.theme-toggle .icon-moon {
-				display: none;
-			}
-			:root[data-theme='dark'] .theme-toggle .icon-sun {
-				display: none;
-			}
-			:root[data-theme='dark'] .theme-toggle .icon-moon {
-				display: block;
 			}
 		</style>
 	</head>
 	<body>
+		<Header transition:persist transition:name="site-header" />
 		<main>
-			<a class="back" href="/tools">
-				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 19-7-7 7-7"></path><path d="M19 12H5"></path></svg>
-				Back to tools
-			</a>
-
-			<header class="page-header">
-				<h1>EPF / ETF Calculator</h1>
-				<p class="subtitle">
+			<section class="section section-head">
+				<a class="back-link" href="/tools">
+					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 19-7-7 7-7"></path><path d="M19 12H5"></path></svg>
+					Back to tools
+				</a>
+				<br />
+				<span class="chip">Tools</span>
+				<h1 class="calc-title">EPF / ETF Calculator</h1>
+				<p class="section-intro">
 					See exactly what gets deducted, what your employer contributes, and
 					your real take-home salary - based on Sri Lankan EPF/ETF rates.
 				</p>
-			</header>
+			</section>
 
-			<form id="calc-form">
-				<div class="card">
-					<div class="field">
-						<label for="salary">Basic Salary</label>
-						<div class="salary-input">
-							<span>LKR</span>
-							<input
-								type="number"
-								id="salary"
-								min="0"
-								step="any"
-								required
-							/>
+			<section class="section">
+				<div class="calc-layout">
+					<form id="calc-form" class="calc-form panel">
+						<div class="field">
+							<label class="field-label" for="salary">Basic Salary</label>
+							<div class="input-wrap salary-input">
+								<span>LKR</span>
+								<input type="number" id="salary" min="0" step="any" required />
+							</div>
 						</div>
-					</div>
 
-					<div class="field">
-						<div class="rates-header">
-							<h2>Contribution Rates</h2>
-							<span class="hint">Standard defaults, editable</span>
-						</div>
-						<div class="rate-grid">
-							<div>
-								<label for="epf-employee">EPF Employee</label>
-								<div class="rate-input">
-									<input type="number" id="epf-employee" value="8" min="0" step="any" />
-									<span>%</span>
-								</div>
+						<div class="field">
+							<div class="rates-header">
+								<h2>Contribution Rates</h2>
+								<span class="hint">Standard defaults, editable</span>
 							</div>
-							<div>
-								<label for="epf-employer">EPF Employer</label>
-								<div class="rate-input">
-									<input type="number" id="epf-employer" value="12" min="0" step="any" />
-									<span>%</span>
+							<div class="rate-grid">
+								<div>
+									<label for="epf-employee">EPF Employee</label>
+									<div class="input-wrap rate-input">
+										<input type="number" id="epf-employee" value="8" min="0" step="any" />
+										<span>%</span>
+									</div>
 								</div>
-							</div>
-							<div>
-								<label for="etf-employer">ETF Employer</label>
-								<div class="rate-input">
-									<input type="number" id="etf-employer" value="3" min="0" step="any" />
-									<span>%</span>
+								<div>
+									<label for="epf-employer">EPF Employer</label>
+									<div class="input-wrap rate-input">
+										<input type="number" id="epf-employer" value="12" min="0" step="any" />
+										<span>%</span>
+									</div>
+								</div>
+								<div>
+									<label for="etf-employer">ETF Employer</label>
+									<div class="input-wrap rate-input">
+										<input type="number" id="etf-employer" value="3" min="0" step="any" />
+										<span>%</span>
+									</div>
 								</div>
 							</div>
 						</div>
-					</div>
-				</div>
 
-				<button class="calculate" type="submit">Calculate</button>
-			</form>
+						<button class="btn btn-primary roll calc-submit" type="submit">
+							<span class="roll-track"><span>Calculate</span><span aria-hidden="true">Calculate</span></span>
+						</button>
+					</form>
 
-			<div id="result">
-				<div class="section-title">Take-Home</div>
-				<div class="hero-card">
-					<div class="hero-label">Net Take-Home Salary</div>
-					<div class="hero-value" id="r-takehome">&nbsp;</div>
-					<div class="hero-sub" id="r-takehome-sub">&nbsp;</div>
-				</div>
+					<div class="calc-results">
+						<div id="result" aria-live="polite">
+							<div class="takehome">
+								<p class="takehome-label">Net Take-Home Salary</p>
+								<p class="takehome-value" id="r-takehome">&nbsp;</p>
+								<p class="takehome-sub" id="r-takehome-sub">&nbsp;</p>
+							</div>
 
-				<div class="section-title">Breakdown</div>
-				<div class="card">
-					<div class="line">
-						<span class="label">Basic Salary</span>
-						<span id="r-salary"></span>
-					</div>
-					<div class="line">
-						<span class="label">EPF Employee Contribution</span>
-						<span id="r-epf-employee-deduction"></span>
-					</div>
-					<div class="line total">
-						<span class="label">Net Take-Home</span>
-						<span id="r-takehome-2"></span>
-					</div>
-				</div>
+							<div class="result-grid">
+								<div class="panel">
+									<h2 class="result-title">Breakdown</h2>
+									<div class="line">
+										<span class="label">Basic Salary</span>
+										<span id="r-salary"></span>
+									</div>
+									<div class="line">
+										<span class="label">EPF Employee Contribution</span>
+										<span id="r-epf-employee-deduction"></span>
+									</div>
+									<div class="line total">
+										<span class="label">Net Take-Home</span>
+										<span id="r-takehome-2"></span>
+									</div>
+								</div>
 
-				<div class="section-title">Employer Cost</div>
-				<div class="card">
-					<div class="line">
-						<span class="label">Basic Salary</span>
-						<span id="r-salary-2"></span>
-					</div>
-					<div class="line">
-						<span class="label">EPF Employer Contribution</span>
-						<span id="r-epf-employer"></span>
-					</div>
-					<div class="line">
-						<span class="label">ETF Employer Contribution</span>
-						<span id="r-etf-employer"></span>
-					</div>
-					<div class="line total">
-						<span class="label">Total Cost to Company</span>
-						<span id="r-company-cost"></span>
-					</div>
-				</div>
+								<div class="panel">
+									<h2 class="result-title">Employer Cost</h2>
+									<div class="line">
+										<span class="label">Basic Salary</span>
+										<span id="r-salary-2"></span>
+									</div>
+									<div class="line">
+										<span class="label">EPF Employer Contribution</span>
+										<span id="r-epf-employer"></span>
+									</div>
+									<div class="line">
+										<span class="label">ETF Employer Contribution</span>
+										<span id="r-etf-employer"></span>
+									</div>
+									<div class="line total">
+										<span class="label">Total Cost to Company</span>
+										<span id="r-company-cost"></span>
+									</div>
+								</div>
+							</div>
 
-				<div class="section-title">Monthly Fund Contribution</div>
-				<div class="card">
-					<div class="summary-grid">
-						<div class="stat">
-							<div class="stat-label">Total EPF</div>
-							<div class="stat-value" id="r-epf-total"></div>
+							<div class="panel">
+								<h2 class="result-title">Monthly Fund Contribution</h2>
+								<div class="summary-grid">
+									<div class="stat">
+										<div class="stat-label">Total EPF</div>
+										<div class="stat-value" id="r-epf-total"></div>
+									</div>
+									<div class="stat">
+										<div class="stat-label">Total ETF</div>
+										<div class="stat-value" id="r-etf-total"></div>
+									</div>
+									<div class="stat accent">
+										<div class="stat-label">Total Retirement / Month</div>
+										<div class="stat-value" id="r-retirement-total"></div>
+									</div>
+								</div>
+							</div>
+
+							<div class="panel">
+								<h2 class="result-title">Fund Growth Over Time</h2>
+								<div class="growth-list">
+									<div class="growth-row growth-header">
+										<span>Period</span>
+										<span>EPF</span>
+										<span>ETF</span>
+										<span>Total</span>
+									</div>
+									<div id="proj-body"></div>
+								</div>
+								<p class="note">No compounding/interest applied - simple monthly contribution &times; months.</p>
+							</div>
 						</div>
-						<div class="stat">
-							<div class="stat-label">Total ETF</div>
-							<div class="stat-value" id="r-etf-total"></div>
-						</div>
-						<div class="stat wide accent">
-							<div class="stat-label">Total Retirement / Month</div>
-							<div class="stat-value" id="r-retirement-total"></div>
+
+						<div class="result-empty">
+							<strong>Your breakdown appears here</strong>
+							<p>Enter your basic salary and press Calculate.</p>
 						</div>
 					</div>
 				</div>
+			</section>
 
-				<div class="section-title">Fund Growth Over Time</div>
-				<div class="card">
-					<div class="growth-list">
-						<div class="growth-row growth-header">
-							<span>Period</span>
-							<span>EPF</span>
-							<span>ETF</span>
-							<span>Total</span>
+			<section class="section">
+				<div class="timeline">
+					<div class="timeline-row">
+						<div class="timeline-label">
+							<h2 class="chip">FAQ</h2>
 						</div>
-						<div id="proj-body"></div>
+						<div class="timeline-body">
+							<div class="panel">
+								<div class="entry">
+									<h3 class="entry-title">What is the EPF contribution rate in Sri Lanka?</h3>
+									<p class="entry-desc">
+										The standard EPF contribution in Sri Lanka is 8% from the employee
+										and 12% from the employer, totaling 20% of the basic salary.
+									</p>
+								</div>
+								<div class="entry">
+									<h3 class="entry-title">What is the ETF contribution rate in Sri Lanka?</h3>
+									<p class="entry-desc">
+										The Employees' Trust Fund (ETF) contribution is 3% of the basic
+										salary, paid entirely by the employer.
+									</p>
+								</div>
+								<div class="entry">
+									<h3 class="entry-title">How is take-home salary calculated after EPF deduction?</h3>
+									<p class="entry-desc">
+										Take-home salary is your basic salary minus the 8% employee EPF
+										contribution. For example, on a basic salary of LKR 100,000, LKR
+										8,000 is deducted for EPF, leaving a take-home salary of LKR
+										92,000.
+									</p>
+								</div>
+							</div>
+						</div>
 					</div>
-					<p class="note">No compounding/interest applied - simple monthly contribution &times; months.</p>
-				</div>
-			</div>
-
-			<section class="faq">
-				<h2>Frequently Asked Questions</h2>
-				<div class="faq-item">
-					<h3>What is the EPF contribution rate in Sri Lanka?</h3>
-					<p>
-						The standard EPF contribution in Sri Lanka is 8% from the employee
-						and 12% from the employer, totaling 20% of the basic salary.
-					</p>
-				</div>
-				<div class="faq-item">
-					<h3>What is the ETF contribution rate in Sri Lanka?</h3>
-					<p>
-						The Employees' Trust Fund (ETF) contribution is 3% of the basic
-						salary, paid entirely by the employer.
-					</p>
-				</div>
-				<div class="faq-item">
-					<h3>How is take-home salary calculated after EPF deduction?</h3>
-					<p>
-						Take-home salary is your basic salary minus the 8% employee EPF
-						contribution. For example, on a basic salary of LKR 100,000, LKR
-						8,000 is deducted for EPF, leaving a take-home salary of LKR
-						92,000.
-					</p>
 				</div>
 			</section>
 		</main>
-
-		<button class="theme-toggle" type="button" aria-label="Toggle theme" data-theme-toggle>
-			<svg class="icon-sun" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2"></path><path d="M12 20v2"></path><path d="m4.93 4.93 1.41 1.41"></path><path d="m17.66 17.66 1.41 1.41"></path><path d="M2 12h2"></path><path d="M20 12h2"></path><path d="m6.34 17.66-1.41 1.41"></path><path d="m19.07 4.93-1.41 1.41"></path></svg>
-			<svg class="icon-moon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path></svg>
-		</button>
+		<Footer transition:persist transition:name="site-footer" />
 
 		<script>
-			const form = document.getElementById('calc-form') as HTMLFormElement;
-			const resultEl = document.getElementById('result') as HTMLElement;
-			const projBody = document.getElementById('proj-body') as HTMLElement;
 			const PERIODS = [
 				{ label: '6 Months', months: 6 },
 				{ label: '1 Year', months: 12 },
@@ -671,60 +624,69 @@ const faqSchema = {
 				if (el) el.textContent = value;
 			};
 
-			form.addEventListener('submit', (e) => {
-				e.preventDefault();
+			const readNumber = (id: string) =>
+				parseFloat((document.getElementById(id) as HTMLInputElement).value) || 0;
 
-				const salary = parseFloat((document.getElementById('salary') as HTMLInputElement).value) || 0;
-				const epfEmployeePct = parseFloat((document.getElementById('epf-employee') as HTMLInputElement).value) || 0;
-				const epfEmployerPct = parseFloat((document.getElementById('epf-employer') as HTMLInputElement).value) || 0;
-				const etfEmployerPct = parseFloat((document.getElementById('etf-employer') as HTMLInputElement).value) || 0;
+			// Re-bound on every client-side visit, since the form is swapped in fresh each time.
+			const initCalculator = () => {
+				const form = document.getElementById('calc-form') as HTMLFormElement | null;
+				const resultEl = document.getElementById('result') as HTMLElement | null;
+				const projBody = document.getElementById('proj-body') as HTMLElement | null;
+				if (!form || !resultEl || !projBody) return;
 
-				const epfEmployeeAmount = (salary * epfEmployeePct) / 100;
-				const epfEmployerAmount = (salary * epfEmployerPct) / 100;
-				const etfEmployerAmount = (salary * etfEmployerPct) / 100;
+				form.addEventListener('submit', (e) => {
+					e.preventDefault();
 
-				const takeHome = salary - epfEmployeeAmount;
-				const companyCost = salary + epfEmployerAmount + etfEmployerAmount;
-				const epfTotal = epfEmployeeAmount + epfEmployerAmount;
-				const etfTotal = etfEmployerAmount;
-				const retirementTotal = epfTotal + etfTotal;
+					const salary = readNumber('salary');
+					const epfEmployeePct = readNumber('epf-employee');
+					const epfEmployerPct = readNumber('epf-employer');
+					const etfEmployerPct = readNumber('etf-employer');
 
-				setText('r-takehome', fmt(takeHome));
-				setText('r-takehome-sub', `${epfEmployeePct}% (${fmt(epfEmployeeAmount)}) deducted for EPF`);
+					const epfEmployeeAmount = (salary * epfEmployeePct) / 100;
+					const epfEmployerAmount = (salary * epfEmployerPct) / 100;
+					const etfEmployerAmount = (salary * etfEmployerPct) / 100;
 
-				setText('r-salary', fmt(salary));
-				setText('r-epf-employee-deduction', '- ' + fmt(epfEmployeeAmount));
-				setText('r-takehome-2', fmt(takeHome));
+					const takeHome = salary - epfEmployeeAmount;
+					const companyCost = salary + epfEmployerAmount + etfEmployerAmount;
+					const epfTotal = epfEmployeeAmount + epfEmployerAmount;
+					const etfTotal = etfEmployerAmount;
+					const retirementTotal = epfTotal + etfTotal;
 
-				setText('r-salary-2', fmt(salary));
-				setText('r-epf-employer', '+ ' + fmt(epfEmployerAmount));
-				setText('r-etf-employer', '+ ' + fmt(etfEmployerAmount));
-				setText('r-company-cost', fmt(companyCost));
+					setText('r-takehome', fmt(takeHome));
+					setText('r-takehome-sub', `${epfEmployeePct}% (${fmt(epfEmployeeAmount)}) deducted for EPF`);
 
-				setText('r-epf-total', fmt(epfTotal));
-				setText('r-etf-total', fmt(etfTotal));
-				setText('r-retirement-total', fmt(retirementTotal));
+					setText('r-salary', fmt(salary));
+					setText('r-epf-employee-deduction', '- ' + fmt(epfEmployeeAmount));
+					setText('r-takehome-2', fmt(takeHome));
 
-				projBody.innerHTML = PERIODS.map(({ label, months }) => {
-					const projEpf = epfTotal * months;
-					const projEtf = etfTotal * months;
-					return `<div class="growth-row">
-						<span>${label}</span>
-						<span>${fmt(projEpf)}</span>
-						<span>${fmt(projEtf)}</span>
-						<span>${fmt(projEpf + projEtf)}</span>
-					</div>`;
-				}).join('');
+					setText('r-salary-2', fmt(salary));
+					setText('r-epf-employer', '+ ' + fmt(epfEmployerAmount));
+					setText('r-etf-employer', '+ ' + fmt(etfEmployerAmount));
+					setText('r-company-cost', fmt(companyCost));
 
-				resultEl.classList.add('visible');
-				resultEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
-			});
+					setText('r-epf-total', fmt(epfTotal));
+					setText('r-etf-total', fmt(etfTotal));
+					setText('r-retirement-total', fmt(retirementTotal));
 
-			document.querySelector('[data-theme-toggle]')?.addEventListener('click', () => {
-				const next = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
-				document.documentElement.dataset.theme = next;
-				localStorage.setItem('theme', next);
-			});
+					projBody.innerHTML = PERIODS.map(({ label, months }) => {
+						const projEpf = epfTotal * months;
+						const projEtf = etfTotal * months;
+						return `<div class="growth-row">
+							<span>${label}</span>
+							<span>${fmt(projEpf)}</span>
+							<span>${fmt(projEtf)}</span>
+							<span>${fmt(projEpf + projEtf)}</span>
+						</div>`;
+					}).join('');
+
+					resultEl.classList.add('visible');
+					if (window.matchMedia('(max-width: 900px)').matches) {
+						resultEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+					}
+				});
+			};
+
+			document.addEventListener('astro:page-load', initCalculator);
 		</script>
 	</body>
 </html>

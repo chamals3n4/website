@@ -2,8 +2,10 @@
 import BaseHead from "../components/BaseHead.astro";
 import Footer from "../components/Footer.astro";
 import Header from "../components/Header.astro";
-import ProfileImage from "../assets/me.jpeg";
+import { Image } from "astro:assets";
+import ProfileImage from "../assets/profile.png";
 import { SITE_DESCRIPTION, SITE_TITLE } from "../consts";
+import { EDUCATION, EXPERIENCE, SKILL_ICONS, SKILL_TAGS } from "../data/profile";
 
 const personSchema = {
     "@context": "https://schema.org",
@@ -43,83 +45,162 @@ const personSchema = {
     <body>
         <Header transition:persist transition:name="site-header" />
         <main>
-            <section class="about-layout">
-                <div class="about-copy">
-                    <h1 class="page-title">{SITE_TITLE}</h1>
-                    <p class="about-meta">
+            <section class="hero">
+                <div class="hero-media">
+                    <figure class="hero-photo">
+                        <Image
+                            src={ProfileImage}
+                            alt="Chamal Senarathna"
+                            widths={[320, 640]}
+                            sizes="(max-width: 640px) 220px, 320px"
+                            format="webp"
+                            loading="eager"
+                        />
+                    </figure>
+                    <nav class="social-icons" aria-label="Social links">
+                        <a href="mailto:chamals004@gmail.com" aria-label="Email Chamal Senarathna">
+                            <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"></rect><path d="m22 7-10 6L2 7"></path></svg>
+                        </a>
+                        <a href="https://github.com/chamals3n4" target="_blank" rel="noopener noreferrer" aria-label="Chamal Senarathna on GitHub">
+                            <svg aria-hidden="true" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"></path></svg>
+                        </a>
+                        <a href="https://linkedin.com/in/chamalsena" target="_blank" rel="noopener noreferrer" aria-label="Chamal Senarathna on LinkedIn">
+                            <svg aria-hidden="true" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"></path></svg>
+                        </a>
+                        <a href="https://x.com/chamalsena" target="_blank" rel="noopener noreferrer" aria-label="Chamal Senarathna on X">
+                            <svg aria-hidden="true" viewBox="0 0 24 24" fill="currentColor"><path d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932ZM17.61 20.644h2.039L6.486 3.24H4.298Z"></path></svg>
+                        </a>
+                        <a href="https://instagram.com/chamalsena" target="_blank" rel="noopener noreferrer" aria-label="Chamal Senarathna on Instagram">
+                            <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><path d="M17.5 6.5h.01"></path></svg>
+                        </a>
+                    </nav>
+                </div>
+                <div class="hero-content">
+                    <p class="hero-location">
+                        <img
+                            src="https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/lk.svg"
+                            alt="Sri Lanka flag"
+                            width="20"
+                            height="15"
+                        />
+                        Colombo, Sri Lanka
+                    </p>
+                    <h1 class="hero-name">{SITE_TITLE}</h1>
+                    <p class="hero-role">
                         Software Engineering Student · Free and Open Source
                     </p>
-                    <p>
+                    <p class="hero-lead">
                         I'm a software engineering undergraduate with a strong
                         interest in full-stack development and building
-                        applications that solve real problems. My focus is on
-                        writing clean, functional code and continuously
-                        growing as an engineer through hands-on work.
+                        applications that solve real problems. As a free and
+                        open-source developer, I build tools like OpenATS and
+                        OpenSchool, because I believe software should be open,
+                        useful, and accessible to everyone.
                     </p>
-                    <p>
-                        I believe technology, when built thoughtfully, has the
-                        power to make a real difference, and that's the kind
-                        of work I want to keep doing.
-                    </p>
-                    <p>
-                        This space is where I document that journey: the
-                        projects I build, the ideas behind them, and the
-                        reflections that come from constantly learning and
-                        improving.
-                    </p>
-                    <div class="social-links" aria-label="Social links">
-                        <a
-                            href="mailto:chamals004@gmail.com"
-                            aria-label="Email Chamal Senarathna"
-                            title="Email"
-                        >
-                            Email
-                        </a>
-                        <a
-                            href="https://x.com/chamalsena"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            aria-label="Chamal Senarathna on X"
-                            title="X"
-                        >
-                            X
-                        </a>
-                        <a
-                            href="https://github.com/chamals3n4"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            aria-label="Chamal Senarathna on GitHub"
-                            title="GitHub"
-                        >
-                            GitHub
-                        </a>
-                        <a
-                            href="https://instagram.com/chamalsena"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            aria-label="Chamal Senarathna on Instagram"
-                            title="Instagram"
-                        >
-                            Instagram
-                        </a>
-                        <a
-                            href="https://linkedin.com/in/chamalsena"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            aria-label="Chamal Senarathna on LinkedIn"
-                            title="LinkedIn"
-                        >
-                            LinkedIn
-                        </a>
-                        <a class="cv-button" href="/cv.pdf" target="_blank" rel="noopener noreferrer">
-                            View CV
+                    <div class="hero-actions">
+                        <a class="btn btn-primary roll" href="mailto:chamals004@gmail.com" aria-label="Email Chamal Senarathna">
+                            <span class="roll-track">
+                                <span>Get in touch</span>
+                                <span aria-hidden="true">Get in touch</span>
+                            </span>
                         </a>
                     </div>
                 </div>
-                <figure class="profile-card">
-                    <img src={ProfileImage.src} alt="" />
-                    <figcaption>GET /me.jpg 200 OK</figcaption>
-                </figure>
+            </section>
+            <section class="section" id="about">
+                <div class="timeline">
+                    <div class="timeline-row">
+                        <div class="timeline-label">
+                            <h2 class="chip">About me</h2>
+                        </div>
+                        <div class="timeline-body">
+                            <div class="panel">
+                                <p>
+                                    My focus is on writing clean, functional
+                                    code and continuously growing as an
+                                    engineer through hands-on work.
+                                </p>
+                                <p>
+                                    I believe technology, when built
+                                    thoughtfully, has the power to make a real
+                                    difference, and that's the kind of work I
+                                    want to keep doing.
+                                </p>
+                                <p>
+                                    This space is where I document that
+                                    journey: the projects I build, the ideas
+                                    behind them, and the reflections that come
+                                    from constantly learning and improving.
+                                </p>
+                                <a class="read-more roll" href="/about">
+                                    <span class="roll-track">
+                                        <span>Read the long story <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg></span>
+                                        <span aria-hidden="true">Read the long story <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg></span>
+                                    </span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="timeline-row">
+                        <div class="timeline-label">
+                            <h2 class="chip">Skills</h2>
+                        </div>
+                        <div class="timeline-body">
+                            <div class="panel">
+                                <ul class="tag-list" aria-label="Skills">
+                                    {SKILL_TAGS.map((tag) => <li class="tag">{tag}</li>)}
+                                </ul>
+                                <ul class="skill-icons" aria-label="Tools and technologies">
+                                    {SKILL_ICONS.map((icon) => (
+                                        <li>
+                                            <img
+                                                class:list={[{ "icon-mono": icon.mono }]}
+                                                src={icon.src}
+                                                alt={icon.name}
+                                                title={icon.name}
+                                                width="28"
+                                                height="28"
+                                                loading="lazy"
+                                            />
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="timeline-row">
+                        <div class="timeline-label">
+                            <h2 class="chip">Experience</h2>
+                        </div>
+                        <div class="timeline-body">
+                            <div class="panel">
+                                {EXPERIENCE.map((item) => (
+                                    <div class="entry">
+                                        <p class="entry-period">{item.period}</p>
+                                        <h3 class="entry-title">{item.title}</h3>
+                                        <p class="entry-desc">{item.description}</p>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="timeline-row">
+                        <div class="timeline-label">
+                            <h2 class="chip">Education</h2>
+                        </div>
+                        <div class="timeline-body">
+                            <div class="panel">
+                                {EDUCATION.map((item) => (
+                                    <div class="entry">
+                                        <p class="entry-period">{item.period}</p>
+                                        <h3 class="entry-title">{item.title}</h3>
+                                        <p class="entry-desc">{item.description}</p>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </section>
         </main>
         <Footer transition:persist transition:name="site-footer" />

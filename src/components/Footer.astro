@@ -1,20 +1,23 @@
-<footer {...Astro.props}>&copy; 2026 Chamal Senarathna.</footer>
+<footer {...Astro.props}>
+	<div class="footer-inner">&copy; 2026 Chamal Senarathna.</div>
+</footer>
 <style>
 	footer {
-		position: fixed;
-		right: 0;
-		bottom: 0;
-		left: 0;
-		z-index: 20;
 		box-sizing: border-box;
-		min-height: 43px;
-		padding: 12px 1rem;
-		font-size: 14px;
-		line-height: 19px;
-		color: var(--text);
-		background: var(--surface);
 		border-top: 1px solid var(--border);
-		text-align: center;
+	}
+	.footer-inner {
+		max-width: var(--frame-width);
+		margin: 0 auto;
+		padding: 28px var(--gutter);
+		border-left: 1px solid var(--border);
+		border-right: 1px solid var(--border);
+		color: var(--muted);
+		font-family: var(--font-mono);
+		font-size: 13px;
+		letter-spacing: 0.02em;
+		line-height: 19px;
+		text-transform: uppercase;
 	}
 	a {
 		color: var(--accent);

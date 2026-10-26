@@ -37,9 +37,15 @@ const {
 
     applyTheme();
     document.addEventListener("astro:after-swap", applyTheme);
+    // Follow the OS theme live until the visitor picks one with the toggle.
+    window
+        .matchMedia("(prefers-color-scheme: dark)")
+        .addEventListener("change", () => {
+            if (!localStorage.getItem("theme")) applyTheme();
+        });
 </script>
 <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-<link rel="icon" href="/favicon.ico" />
+<link rel="icon" href="/favicon.ico" sizes="any" />
 <link rel="sitemap" href="/sitemap-index.xml" />
 <link
     rel="alternate"
@@ -53,7 +59,7 @@ const {
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link
     rel="stylesheet"
-    href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Mona+Sans:wght@400;500;600;700&family=Geist+Mono:wght@400;500;600&display=swap"
 />
 
 <link rel="canonical" href={canonicalURL} />
@@ -89,3 +95,66 @@ const {
 </script>
 
 <ClientRouter />
+<script>
+    // Fade/slide sections in as they scroll into view, like the Framer template.
+    const REVEAL_SELECTOR = [
+        ".section .chip",
+        ".section-intro",
+        ".search-field",
+        ".timeline-body",
+        ".project-card",
+        ".post-row",
+        ".tool-card",
+        ".oss-card",
+    ].join(",");
+
+    let observer: IntersectionObserver | undefined;
+
+    const initReveal = () => {
+        observer?.disconnect();
+        if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+        const targets = Array.from(document.querySelectorAll<HTMLElement>(REVEAL_SELECTOR));
+        if (!targets.length) return;
+
+        targets.forEach((el) => el.setAttribute("data-reveal", ""));
+        document.documentElement.classList.add("reveal-ready");
+
+        observer = new IntersectionObserver(
+            (entries) => {
+                entries
+                    .filter((entry) => entry.isIntersecting)
+                    .forEach((entry, index) => {
+                        const el = entry.target as HTMLElement;
+                        el.style.setProperty("--reveal-delay", `${index * 90}ms`);
+                        el.classList.add("is-revealed");
+                        observer?.unobserve(el);
+                    });
+            },
+            { rootMargin: "0px 0px -8% 0px", threshold: 0.12 },
+        );
+
+        targets.forEach((el) => observer?.observe(el));
+    };
+
+    document.addEventListener("astro:page-load", initReveal);
+
+    // Same-page anchors (e.g. "/#about" while on "/") glide instead of jumping.
+    document.addEventListener(
+        "click",
+        (event) => {
+            if (!(event.target instanceof Element)) return;
+            const link = event.target.closest<HTMLAnchorElement>('a[href*="#"]');
+            if (!link || link.origin !== location.origin || link.pathname !== location.pathname || !link.hash) return;
+
+            const target = document.getElementById(decodeURIComponent(link.hash.slice(1)));
+            if (!target) return;
+
+            event.preventDefault();
+            event.stopImmediatePropagation();
+            target.scrollIntoView({ behavior: "smooth", block: "start" });
+            history.pushState(history.state, "", link.hash);
+        },
+        { capture: true },
+    );
+</script>
