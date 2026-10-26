@@ -1,0 +1,129 @@
+---
+import BaseHead from "../components/BaseHead.astro";
+import Footer from "../components/Footer.astro";
+import Header from "../components/Header.astro";
+import { SITE_TITLE } from "../consts";
+import { OSS_PROJECTS } from "../data/profile";
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <BaseHead
+      title={`Open Source | ${SITE_TITLE}`}
+      description="Open source projects Chamal Senarathna maintains: OpenATS and OpenSchool."
+    />
+    <style>
+      .oss-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 20px;
+      }
+      .oss-card {
+        display: flex;
+        flex-direction: column;
+        padding: 28px;
+        border-radius: var(--radius);
+        background: var(--surface-alt);
+      }
+      .oss-role {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        margin: 0 0 18px;
+        color: var(--muted);
+        font-family: var(--font-mono);
+        font-size: 13px;
+        letter-spacing: 0.02em;
+        text-transform: uppercase;
+      }
+      .oss-role::before {
+        content: "";
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: var(--dot);
+      }
+      .oss-name {
+        margin: 0 0 10px;
+        font-size: 28px;
+        font-weight: 500;
+        letter-spacing: -0.02em;
+      }
+      .oss-name a {
+        color: var(--text);
+      }
+      .oss-desc {
+        margin: 0 0 20px;
+        color: var(--muted);
+        font-size: 15px;
+        line-height: 1.65;
+      }
+      .oss-card .tag-list {
+        margin-bottom: 24px;
+      }
+      .oss-links {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: auto;
+      }
+      .oss-links .btn {
+        min-height: 42px;
+        padding: 0 16px;
+        font-size: 13px;
+      }
+
+      @media (max-width: 760px) {
+        .oss-grid {
+          grid-template-columns: minmax(0, 1fr);
+        }
+        .oss-card {
+          padding: 22px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <Header transition:persist transition:name="site-header" />
+    <main>
+      <section class="section section-head">
+        <h1 class="chip">Open Source</h1>
+        <p class="section-intro">
+          I believe software should be open, useful, accessible, and create a
+          positive impact, and I work to build it that way.
+        </p>
+      </section>
+
+      <section class="section">
+        <div class="oss-grid">
+          {
+            OSS_PROJECTS.map((project) => (
+              <article class="oss-card">
+                <p class="oss-role">{project.role}</p>
+                <h2 class="oss-name">
+                  <a href={project.repo} target="_blank" rel="noopener noreferrer">{project.name}</a>
+                </h2>
+                <p class="oss-desc">{project.description}</p>
+                <ul class="tag-list" aria-label={`${project.name} stack`}>
+                  {project.stack.map((item) => <li class="tag">{item}</li>)}
+                </ul>
+                <div class="oss-links">
+                  <a class="btn btn-primary roll" href={project.repo} target="_blank" rel="noopener noreferrer">
+                    <span class="roll-track"><span>Source</span><span aria-hidden="true">Source</span></span>
+                  </a>
+                  {project.site && (
+                    <a class="btn btn-outline roll" href={project.site} target="_blank" rel="noopener noreferrer">
+                      <span class="roll-track"><span>Website</span><span aria-hidden="true">Website</span></span>
+                    </a>
+                  )}
+                </div>
+              </article>
+            ))
+          }
+        </div>
+      </section>
+    </main>
+    <Footer transition:persist transition:name="site-footer" />
+  </body>
+</html>

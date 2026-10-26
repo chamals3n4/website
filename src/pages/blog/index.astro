@@ -16,18 +16,21 @@ const posts = (await getCollection("blog")).sort(
 	<head>
 		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
 		<style>
-			main {
-				width: 100%;
-				max-width: var(--page-width);
-				margin-top: 1.25rem;
+			.blog-head {
+				display: flex;
+				flex-wrap: wrap;
+				align-items: flex-end;
+				justify-content: space-between;
+				gap: 28px;
 			}
 			.search-field {
 				position: relative;
-				margin: 0 0 1rem;
+				flex: 0 1 340px;
+				width: 100%;
 			}
 			.search-field svg {
 				position: absolute;
-				left: 14px;
+				left: 16px;
 				top: 50%;
 				transform: translateY(-50%);
 				width: 16px;
@@ -37,21 +40,24 @@ const posts = (await getCollection("blog")).sort(
 			}
 			.blog-search {
 				width: 100%;
-				height: 42px;
-				padding: 0 14px 0 38px;
-				border: 1px solid var(--border);
+				height: 48px;
+				padding: 0 16px 0 44px;
+				border: 1px solid var(--border-strong);
 				border-radius: 4px;
 				background: var(--surface);
 				color: var(--text);
-				font: inherit;
+				font-family: var(--font-mono);
 				font-size: 14px;
 				outline: none;
+				transition: border-color 150ms ease;
 			}
 			.blog-search:focus {
-				border-color: var(--accent);
+				border-color: var(--text);
 			}
 			.blog-search::placeholder {
 				color: var(--muted);
+				text-transform: uppercase;
+				letter-spacing: 0.02em;
 			}
 			.blog-search::-webkit-search-decoration,
 			.blog-search::-webkit-search-cancel-button {
@@ -59,63 +65,139 @@ const posts = (await getCollection("blog")).sort(
 				appearance: none;
 			}
 			.post-list {
-				list-style: none;
 				margin: 0;
 				padding: 0;
+				list-style: none;
+				border-top: 1px solid var(--border);
 			}
 			.post-row {
 				margin: 0;
-				border: 1px solid var(--border);
-				background: var(--surface);
-				line-height: 1.45;
-				transition: border-color 500ms ease;
-				cursor: pointer;
+				border-bottom: 1px solid var(--border);
 			}
-			.post-row:hover {
-				border-color: var(--accent);
-			}
-			.post-date {
-				margin: 6px 0 0;
-				font-weight: 400;
-				color: var(--muted);
-				font-size: 13px;
+			.post-row[hidden] {
+				display: none;
 			}
 			.post-title-link {
-				display: block;
-				padding: 20px 24px;
+				display: grid;
+				grid-template-columns: 180px minmax(0, 1fr) auto;
+				align-items: center;
+				gap: 32px;
+				padding: 32px 0;
 				color: inherit;
 				text-decoration: none;
 			}
-			.post-title-link:hover {
-				color: inherit;
-			}
+			.post-title-link:hover,
 			.post-title-link:visited {
 				color: inherit;
 			}
+			.post-date {
+				align-self: start;
+				padding-top: 6px;
+				color: var(--muted);
+				font-family: var(--font-mono);
+				font-size: 13px;
+				letter-spacing: 0.02em;
+				text-transform: uppercase;
+			}
 			.post-title {
-				display: inline-block;
-				color: var(--accent);
-				font-size: 16px;
-				font-weight: 700;
-				line-height: 1.35;
+				display: block;
+				color: var(--text);
+				font-size: 24px;
+				font-weight: 500;
+				letter-spacing: -0.02em;
+				line-height: 1.3;
+				transition: opacity 400ms ease;
 			}
 			.post-description {
-				margin: 3px 0 0;
-				font-size: 14px;
+				max-width: 620px;
+				margin: 8px 0 0;
+				color: var(--muted);
+				font-size: 15px;
+				line-height: 1.6;
+			}
+			.post-arrow {
+				--ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+				position: relative;
+				display: inline-grid;
+				place-items: center;
+				width: 48px;
+				height: 48px;
+				overflow: hidden;
+				border: 1px solid var(--border-strong);
+				border-radius: 50%;
 				color: var(--text);
+				font-size: 18px;
+				isolation: isolate;
+				transition:
+					color 450ms var(--ease-out),
+					border-color 450ms var(--ease-out),
+					transform 550ms var(--ease-out);
+			}
+			/* Fill grows out from the centre instead of snapping on. */
+			.post-arrow::before {
+				content: "";
+				position: absolute;
+				inset: 0;
+				z-index: -1;
+				border-radius: 50%;
+				background: var(--text);
+				transform: scale(0);
+				transition: transform 550ms var(--ease-out);
+			}
+			.post-title-link:hover .post-arrow,
+			.post-title-link:focus-visible .post-arrow {
+				border-color: var(--text);
+				color: var(--surface);
+				transform: translateX(6px);
+			}
+			.post-title-link:hover .post-arrow::before,
+			.post-title-link:focus-visible .post-arrow::before {
+				transform: scale(1);
+			}
+			.post-title-link:hover .post-title {
+				opacity: 0.7;
+			}
+			@media (prefers-reduced-motion: reduce) {
+				.post-arrow,
+				.post-arrow::before {
+					transition: none;
+				}
 			}
 			.no-results {
 				display: none;
-				margin: 1rem 0 0;
+				margin: 24px 0 0;
+				padding: 32px;
+				border: 1px dashed var(--border-strong);
+				border-radius: var(--radius);
 				color: var(--muted);
+				font-family: var(--font-mono);
 				font-size: 14px;
+				text-align: center;
+				text-transform: uppercase;
 			}
 			.no-results.is-visible {
 				display: block;
 			}
-			@media (max-width: 720px) {
+			@media (max-width: 760px) {
+				.search-field {
+					flex-basis: 100%;
+				}
 				.post-title-link {
-					padding: 18px;
+					grid-template-columns: minmax(0, 1fr) auto;
+					gap: 10px 20px;
+					padding: 24px 0;
+				}
+				.post-date {
+					grid-column: 1 / -1;
+					padding-top: 0;
+				}
+				.post-title {
+					font-size: 20px;
+				}
+				.post-arrow {
+					width: 40px;
+					height: 40px;
+					font-size: 16px;
 				}
 			}
 		</style>
@@ -123,61 +205,73 @@ const posts = (await getCollection("blog")).sort(
 	<body>
 		<Header transition:persist transition:name="site-header" />
 		<main>
-			<div class="search-field">
-				<svg
-					xmlns="http://www.w3.org/2000/svg"
-					viewBox="0 0 24 24"
-					fill="none"
-					stroke="currentColor"
-					stroke-width="2"
-					stroke-linecap="round"
-					stroke-linejoin="round"
-					><circle cx="11" cy="11" r="8"></circle><path
-						d="m21 21-4.3-4.3"></path></svg
-				>
-				<input
-					class="blog-search"
-					type="search"
-					placeholder="Search posts..."
-					aria-label="Search blog posts"
-					data-blog-search
-				/>
-			</div>
-			<ul class="post-list">
-				{
-					posts.map((post) => {
-						const href =
-							post.data.externalUrl ?? `/blog/${post.id}/`;
-						const target = post.data.externalUrl
-							? "_blank"
-							: undefined;
-						const rel = post.data.externalUrl
-							? "noopener noreferrer"
-							: undefined;
+			<section class="section section-head">
+				<div class="blog-head">
+					<div>
+						<h1 class="chip">Blog</h1>
+						<p class="section-intro">
+							Notes on the things I build, the tools I use, and the
+							moments in between.
+						</p>
+					</div>
+					<div class="search-field">
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							viewBox="0 0 24 24"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="2"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							><circle cx="11" cy="11" r="8"></circle><path
+								d="m21 21-4.3-4.3"></path></svg
+						>
+						<input
+							class="blog-search"
+							type="search"
+							placeholder="Search posts..."
+							aria-label="Search blog posts"
+							data-blog-search
+						/>
+					</div>
+				</div>
+			</section>
+			<section class="section">
+				<ul class="post-list">
+					{
+						posts.map((post) => {
+							const isExternal = Boolean(post.data.externalUrl);
+							const href = post.data.externalUrl ?? `/blog/${post.id}/`;
 
-						return (
-							<li
-								class="post-row"
-								data-search-text={`${post.data.title} ${post.data.description} ${post.data.pubDate.toDateString()}`.toLowerCase()}
-							>
-								<a
-									class="post-title-link"
-									href={href}
-									target={target}
-									rel={rel}
+							return (
+								<li
+									class="post-row"
+									data-search-text={`${post.data.title} ${post.data.description} ${post.data.pubDate.toDateString()}`.toLowerCase()}
 								>
-									<span class="post-title">{post.data.title}</span>
-									<p class="post-description">{post.data.description}</p>
-									<div class="post-date">
-										<FormattedDate date={post.data.pubDate} />
-									</div>
-								</a>
-							</li>
-						);
-					})
-				}
-			</ul>
-			<p class="no-results" data-blog-empty>No posts found.</p>
+									<a
+										class="post-title-link"
+										href={href}
+										target={isExternal ? "_blank" : undefined}
+										rel={isExternal ? "noopener noreferrer" : undefined}
+									>
+										<div class="post-date">
+											<FormattedDate date={post.data.pubDate} />
+										</div>
+										<div class="post-body">
+											<span class="post-title">{post.data.title}</span>
+											<p class="post-description">{post.data.description}</p>
+										</div>
+										<span class="post-arrow" aria-hidden="true">
+											{isExternal ? "↗" : "→"}
+										</span>
+									</a>
+								</li>
+							);
+						})
+					}
+				</ul>
+				<p class="no-results" data-blog-empty>No posts found.</p>
+			</section>
 		</main>
 		<Footer transition:persist transition:name="site-footer" />
 		<script>
