@@ -7,6 +7,12 @@
   --surface: #ffffff;
   --surface-alt: #f3f4f6;
   --dot: #22c55e;
+  --chip-from: #f0f9ff;
+  --chip-to: #dbeefc;
+  --chip-text: #0c4a6e;
+  --chip-border: #bae6fd;
+  --role-from: #0369a1;
+  --role-to: #0ea5e9;
   --code-bg: #f3f4f6;
   --code-text: #1f1f1f;
   --code-block-bg: #f7f7f8;
@@ -32,6 +38,12 @@ html[data-theme="dark"] {
   --code-block-bg: #121212;
   --code-block-border: #2a2a2a;
   --social-link: #f5f5f5;
+  --chip-from: #0b2536;
+  --chip-to: #0c3a55;
+  --chip-text: #e0f2fe;
+  --chip-border: #0c4a6e;
+  --role-from: #38bdf8;
+  --role-to: #7dd3fc;
   color-scheme: dark;
 }
 * {
@@ -273,10 +285,11 @@ hr {
   gap: 8px;
   margin: 0;
   padding: 6px 12px;
-  border: 1px solid var(--border-strong);
+  border: 1px solid var(--chip-border);
   border-radius: 4px;
-  background: var(--surface);
-  color: var(--text);
+  /* Ocean-blue gradient; deeper blues in dark mode. */
+  background: linear-gradient(90deg, var(--chip-from), var(--chip-to));
+  color: var(--chip-text);
   font-family: var(--font-mono);
   font-size: 13px;
   font-weight: 500;
@@ -290,8 +303,8 @@ hr {
   width: 5px;
   height: 5px;
   border-radius: 50%;
-  background: var(--muted);
-  opacity: 0.6;
+  background: var(--chip-text);
+  opacity: 0.8;
 }
 
 .section-intro {
@@ -498,6 +511,28 @@ html[data-theme="dark"] .icon-mono {
   margin-top: 28px;
 }
 
+.entry--logo {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+}
+
+.entry-logo {
+  flex: none;
+  width: 48px;
+  height: 48px;
+  border-radius: 8px;
+  padding: 5px;
+  box-sizing: border-box;
+  border: 1px solid var(--border-strong);
+  background: #fff;
+  object-fit: contain;
+}
+
+.entry-content {
+  min-width: 0;
+}
+
 .entry-period {
   margin: 0 0 8px;
   color: var(--muted);
@@ -683,19 +718,39 @@ html[data-theme="dark"] .icon-mono {
 }
 
 .hero-role {
+  width: fit-content;
   margin: 0 0 20px;
-  color: var(--muted);
-  font-size: 16px;
+  font-family: var(--font-mono);
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text);
+  background: linear-gradient(90deg, var(--role-from), var(--role-to));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .hero-lead {
-  max-width: 580px;
+  max-width: 680px;
   margin: 0 0 64px;
   color: var(--text);
   font-size: clamp(18px, 2vw, 20px);
   font-weight: 500;
-  line-height: 1.25;
+  line-height: 1.35;
   letter-spacing: -0.01em;
+}
+
+/* One sentence per line; balance keeps wrapped lines even on small screens. */
+.hero-lead > span {
+  display: block;
+  text-wrap: balance;
+}
+
+.hero-lead > .hero-lead-sign {
+  margin-top: 12px;
+  color: var(--muted);
 }
 
 .hero-actions {

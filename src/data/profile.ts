@@ -1,3 +1,7 @@
+import ElephantJourneyLogo from "../assets/logos/elephant-journey-logo.jpg";
+import SliitLogo from "../assets/logos/sliit-logo.jpg";
+import WrcLogo from "../assets/logos/wrc-logo.jpg";
+
 const DEVICON = "https://cdn.jsdelivr.net/gh/devicons/devicon@v2.16.0/icons";
 const SIMPLE_ICONS = "https://cdn.jsdelivr.net/npm/simple-icons@15.0.0/icons";
 
@@ -51,6 +55,8 @@ export const EXPERIENCE = [
 	{
 		period: "Jun 2023 – Present",
 		title: "Co-Founder — Elephant Journey",
+		logo: ElephantJourneyLogo,
+		logoAlt: "Elephant Journey logo",
 		description:
 			"Co-founded a community-driven mobile app addressing human-elephant conflict in Sri Lanka, now at 15,000+ downloads across iOS and Android. Designed the complete UI/UX in Figma, maintain the Next.js website, and built internal tools for regional alert management and data analytics.",
 	},
@@ -60,13 +66,18 @@ export const EDUCATION = [
 	{
 		period: "Oct 2024 – Present",
 		title: "B.Sc (Hons) in Software Engineering — SLIIT",
+		logo: SliitLogo,
+		logoAlt: "SLIIT logo",
 		description:
-			"Sri Lanka Institute of Information Technology, Malabe. Relevant modules: DSA, Database Design, Object-Oriented Analysis, Computer Networks, OS & System Admin.",
+			"Going deep on how great software is built — algorithms, databases, object-oriented design and architecture-based development.",
 	},
 	{
 		period: "2019 – 2021",
 		title: "G.C.E Advanced Level — Wayamba Royal College",
-		description: "Commerce stream, Kurunegala.",
+		logo: WrcLogo,
+		logoAlt: "Wayamba Royal College logo",
+		description:
+			"Common Stream — Accounting, Business Studies, and ICT.",
 	},
 ];
 

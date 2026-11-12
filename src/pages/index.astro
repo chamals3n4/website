@@ -87,15 +87,12 @@ const personSchema = {
                     </p>
                     <h1 class="hero-name">{SITE_TITLE}</h1>
                     <p class="hero-role">
-                        Software Engineering Student · Free and Open Source
+                        Designer · Developer · Open Source Contributor &amp; Maintainer
                     </p>
                     <p class="hero-lead">
-                        I'm a software engineering undergraduate with a strong
-                        interest in full-stack development and building
-                        applications that solve real problems. As a free and
-                        open-source developer, I build tools like OpenATS and
-                        OpenSchool, because I believe software should be open,
-                        useful, and accessible to everyone.
+                        <span>Making things better through software is what I enjoy most.</span>
+                        <span>If it saves someone time or makes their day easier, it's worth building.</span>
+                        <span class="hero-lead-sign">Always learning, always building.</span>
                     </p>
                     <div class="hero-actions">
                         <a class="btn btn-primary roll" href="mailto:chamals004@gmail.com" aria-label="Email Chamal Senarathna">
@@ -143,7 +140,7 @@ const personSchema = {
                     </div>
                     <div class="timeline-row">
                         <div class="timeline-label">
-                            <h2 class="chip">Skills</h2>
+                            <h2 class="chip">Go-tos</h2>
                         </div>
                         <div class="timeline-body">
                             <div class="panel">
@@ -175,10 +172,19 @@ const personSchema = {
                         <div class="timeline-body">
                             <div class="panel">
                                 {EXPERIENCE.map((item) => (
-                                    <div class="entry">
-                                        <p class="entry-period">{item.period}</p>
-                                        <h3 class="entry-title">{item.title}</h3>
-                                        <p class="entry-desc">{item.description}</p>
+                                    <div class="entry entry--logo">
+                                        <Image
+                                            src={item.logo}
+                                            alt={item.logoAlt}
+                                            class="entry-logo"
+                                            width={96}
+                                            height={96}
+                                        />
+                                        <div class="entry-content">
+                                            <p class="entry-period">{item.period}</p>
+                                            <h3 class="entry-title">{item.title}</h3>
+                                            <p class="entry-desc">{item.description}</p>
+                                        </div>
                                     </div>
                                 ))}
                             </div>
@@ -191,10 +197,19 @@ const personSchema = {
                         <div class="timeline-body">
                             <div class="panel">
                                 {EDUCATION.map((item) => (
-                                    <div class="entry">
-                                        <p class="entry-period">{item.period}</p>
-                                        <h3 class="entry-title">{item.title}</h3>
-                                        <p class="entry-desc">{item.description}</p>
+                                    <div class="entry entry--logo">
+                                        <Image
+                                            src={item.logo}
+                                            alt={item.logoAlt}
+                                            class="entry-logo"
+                                            width={96}
+                                            height={96}
+                                        />
+                                        <div class="entry-content">
+                                            <p class="entry-period">{item.period}</p>
+                                            <h3 class="entry-title">{item.title}</h3>
+                                            <p class="entry-desc">{item.description}</p>
+                                        </div>
                                     </div>
                                 ))}
                             </div>
