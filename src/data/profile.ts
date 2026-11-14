@@ -98,6 +98,6 @@ export const OSS_PROJECTS = [
 			"Open digital platform for Sri Lankan schools: student and staff records, classes, attendance, curriculum, timetables, marks and reports in one self-hostable system.",
 		stack: ["Go", "TypeScript", "React", "IBM Carbon Design System", "PostgreSQL", "ThunderID"],
 		repo: "https://github.com/openschool-org/openschool",
-		site: "https://openschool-org.github.io/openschool-web/",
+		site: "https://openschool-org.github.io",
 	},
 ];
