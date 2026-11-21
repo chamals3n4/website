@@ -1,4 +1,10 @@
-### Nth time updating this site ( chamalsena.me )
+## chamalsena.me
 
-Theme inspired from:
-https://github.com/withastro/astro
+My personal website, built with [Astro](https://astro.build).
+
+## Run locally
+
+```sh
+pnpm install
+pnpm dev
+```
