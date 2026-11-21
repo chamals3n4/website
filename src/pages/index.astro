@@ -176,14 +176,23 @@ const personSchema = {
                                         <Image
                                             src={item.logo}
                                             alt={item.logoAlt}
-                                            class="entry-logo"
+                                            class:list={["entry-logo", { "entry-logo--light": item.logoDark }]}
                                             width={96}
                                             height={96}
                                         />
+                                        {item.logoDark && (
+                                            <Image
+                                                src={item.logoDark}
+                                                alt={item.logoAlt}
+                                                class="entry-logo entry-logo--dark"
+                                                width={96}
+                                                height={96}
+                                            />
+                                        )}
                                         <div class="entry-content">
-                                            <p class="entry-period">{item.period}</p>
                                             <h3 class="entry-title">{item.title}</h3>
-                                            <p class="entry-desc">{item.description}</p>
+                                            <p class="entry-period">{item.period}</p>
+                                            {item.description && <p class="entry-desc">{item.description}</p>}
                                         </div>
                                     </div>
                                 ))}
@@ -206,8 +215,8 @@ const personSchema = {
                                             height={96}
                                         />
                                         <div class="entry-content">
-                                            <p class="entry-period">{item.period}</p>
                                             <h3 class="entry-title">{item.title}</h3>
+                                            <p class="entry-period">{item.period}</p>
                                             <p class="entry-desc">{item.description}</p>
                                         </div>
                                     </div>

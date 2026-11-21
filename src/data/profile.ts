@@ -1,3 +1,5 @@
+import ChoreoLabsLogo from "../assets/logos/choreo-labs-icon.svg";
+import ChoreoLabsLogoWhite from "../assets/logos/choreo-labs-icon-white.svg";
 import ElephantJourneyLogo from "../assets/logos/elephant-journey-logo.jpg";
 import SliitLogo from "../assets/logos/sliit-logo.jpg";
 import WrcLogo from "../assets/logos/wrc-logo.jpg";
@@ -51,7 +53,22 @@ export const SKILL_ICONS: { name: string; src: string; mono?: boolean }[] = [
 	{ name: "Vercel", src: `${DEVICON}/vercel/vercel-original.svg`, mono: true },
 ];
 
-export const EXPERIENCE = [
+export const EXPERIENCE: {
+	period: string;
+	title: string;
+	logo: ImageMetadata;
+	/** Optional logo shown in dark mode instead of `logo`. */
+	logoDark?: ImageMetadata;
+	logoAlt: string;
+	description?: string;
+}[] = [
+	{
+		period: "Nov 2026 – Present",
+		title: "Software Engineering Intern — Choreo Labs (formerly WSO2)",
+		logo: ChoreoLabsLogo,
+		logoDark: ChoreoLabsLogoWhite,
+		logoAlt: "Choreo Labs logo",
+	},
 	{
 		period: "Jun 2023 – Present",
 		title: "Co-Founder — Elephant Journey",
